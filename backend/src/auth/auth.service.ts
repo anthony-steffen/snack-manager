@@ -1,26 +1,31 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, ConflictException } from '@nestjs/common';
+import { PrismaService } from '../../prisma/prisma.service';
 import { CreateAuthDto } from './dto/create-auth.dto';
-import { UpdateAuthDto } from './dto/update-auth.dto';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class AuthService {
-  create(createAuthDto: CreateAuthDto) {
-    return `This action adds a new auth with the following details: ${JSON.stringify(createAuthDto)}`;
-  }
+  constructor(private prisma: PrismaService) {}
 
-  findAll() {
-    return `This action returns all auth`;
-  }
+  async register(data: CreateAuthDto) {
+    // Verifica se o e-mail já está cadastrado
+    const userExists = await this.prisma.user.findUnique({
+      where: { email: data.email },
+    });
 
-  findOne(id: number) {
-    return `This action returns a #${id} auth`;
-  }
+    if (userExists) {
+      throw new ConflictException('Email já cadastrado');
+    }
 
-  update(id: number, updateAuthDto: UpdateAuthDto) {
-    return `This action updates a #${id} auth with the following details: ${JSON.stringify(updateAuthDto)}`;
-  }
+    // Criptografa a senha antes de salvar
+    const hashedPassword = await bcrypt.hash(data.password, 10);
 
-  remove(id: number) {
-    return `This action removes a #${id} auth`;
+    return this.prisma.user.create({
+      data: {
+        name: data.name,
+        email: data.email,
+        password: hashedPassword, // Armazena a senha criptografada
+      },
+    });
   }
 }
