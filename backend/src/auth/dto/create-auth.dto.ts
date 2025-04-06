@@ -12,4 +12,8 @@ export class CreateAuthDto {
   @IsNotEmpty({ message: 'Senha é obrigatória' })
   @MinLength(6, { message: 'A senha deve ter pelo menos 6 caracteres' })
   password: string;
+
+  @IsNotEmpty({ message: 'Função é obrigatória' })
+  @MinLength(3, { message: 'Função deve ter pelo menos 3 caracteres' })
+  role: string;
 }

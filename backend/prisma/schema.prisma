@@ -14,7 +14,7 @@ datasource db {
 }
 
 model User {
-  id        String  @id @default(uuid())
+  id    Int     @id @default(autoincrement()) // ID único gerado automaticamente
   name      String
   email     String  @unique
   password  String
@@ -23,8 +23,18 @@ model User {
   updatedAt DateTime @updatedAt
 }
 
-
 enum Role {
   USER
   ADMIN
+}
+
+  model Product {
+  id    Int     @id @default(autoincrement()) // ID único gerado automaticamente
+  name        String   // Nome do produto
+  description String?  // Descrição opcional
+  price       Float    // Preço do produto
+  imgUrl     String?  // URL da imagem opcional
+  stock       Int      // Quantidade em estoque
+  createdAt   DateTime @default(now()) // Data de criação automática
+  updatedAt   DateTime @updatedAt      // Atualiza automaticamente a cada alteração
 }
