@@ -31,13 +31,13 @@ export class UsersController {
   @UseGuards(RolesGuard)
   @Roles('admin')
   @Patch(':id/role')
-  updateRole(@Param('id') id: number, @Param() dto: UpdateUserRoleDto) {
-    return this.usersService.updateRole(id, dto);
+  update(@Param('id') id: number, @Param() dto: UpdateUserRoleDto) {
+    return this.usersService.update(id, dto);
   }
   @UseGuards(RolesGuard)
-  @Roles('admin')
+  @Roles('ADMIN')
   @Delete(':id/remove')
-  remove(@Param('id') id: number) {
-    return this.usersService.remove(id);
+  remove(@Param('id') id: string) {
+    return this.usersService.delete(id);
   }
 }

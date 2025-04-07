@@ -1,4 +1,9 @@
-import { IsEmail, IsNotEmpty, MinLength } from 'class-validator';
+import { IsEmail, IsNotEmpty, MinLength, IsEnum } from 'class-validator';
+
+export enum Role {
+  USER = 'USER',
+  ADMIN = 'ADMIN',
+}
 
 export class CreateAuthDto {
   @IsNotEmpty({ message: 'Nome é obrigatório' })
@@ -13,7 +18,6 @@ export class CreateAuthDto {
   @MinLength(6, { message: 'A senha deve ter pelo menos 6 caracteres' })
   password: string;
 
-  @IsNotEmpty({ message: 'Função é obrigatória' })
-  @MinLength(3, { message: 'Função deve ter pelo menos 3 caracteres' })
-  role: string;
+  @IsEnum(Role, { message: 'Função deve ser USER ou ADMIN' })
+  role: Role;
 }

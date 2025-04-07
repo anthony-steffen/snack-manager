@@ -9,14 +9,15 @@ export class UsersService {
 
   async findAll(): Promise<UserDto[]> {
     return this.prisma.user.findMany({
-      select: { id: true, name: true, email: true },
+      select: { id: true, name: true, email: true, role: true },
+      orderBy: { name: 'asc' },
     });
   }
 
   async findOne(id: number): Promise<UserDto> {
     const user = await this.prisma.user.findUnique({
       where: { id },
-      select: { id: true, name: true, email: true },
+      select: { id: true, name: true, email: true, role: true },
     });
 
     if (!user) {
@@ -26,26 +27,24 @@ export class UsersService {
     return user;
   }
 
-  async updateRole(id: number, dto: UpdateUserRoleDto) {
+  async update(id: number, data: UpdateUserRoleDto): Promise<UserDto> {
     const user = await this.prisma.user.findUnique({ where: { id } });
-
-    if (!user) {
-      throw new NotFoundException(`Usuário com ID ${id} não encontrado.`);
-    }
+    if (!user) throw new NotFoundException('Usuário não encontrado');
 
     return this.prisma.user.update({
       where: { id },
-      data: { role: dto.role },
-      select: { id: true, name: true, email: true, role: true },
+      data,
     });
   }
-  async remove(id: number) {
-    const user = await this.prisma.user.findUnique({ where: { id } });
 
-    if (!user) {
-      throw new NotFoundException(`Usuário com ID ${id} não encontrado.`);
-    }
+  async delete(id: string) {
+    const user = await this.prisma.user.findUnique({
+      where: { id: Number(id) },
+    });
+    if (!user) throw new NotFoundException('Usuário não encontrado');
 
-    return this.prisma.user.delete({ where: { id } });
+    return this.prisma.user.delete({
+      where: { id: Number(id) },
+    });
   }
 }

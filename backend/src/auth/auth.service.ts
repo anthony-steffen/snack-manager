@@ -4,6 +4,7 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
+import { Role } from '@prisma/client';
 import { CreateAuthDto } from './dto/create-auth.dto';
 import { LoginAuthDto } from './dto/login-auth.dto';
 import { JwtService } from '@nestjs/jwt';
@@ -34,6 +35,7 @@ export class AuthService {
         name: data.name,
         email: data.email,
         password: hashedPassword, // Armazena a senha criptografada
+        role: data.role ?? Role.USER, // Define um valor padrão para o campo role
       },
     });
   }
@@ -54,7 +56,7 @@ export class AuthService {
       throw new UnauthorizedException('Invalid credentials');
     }
 
-    const payload = { sub: user.id, email: user.email };
+    const payload = { sub: user.id, email: user.email, role: user.role };
     const accessToken = this.jwtService.sign(payload);
 
     return { accessToken };
