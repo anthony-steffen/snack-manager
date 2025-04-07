@@ -3,6 +3,7 @@ import {
   Controller,
   Get,
   Post,
+  Req,
   Request,
   UseGuards,
 } from '@nestjs/common';
@@ -27,5 +28,17 @@ export class AuthController {
   @Get('profile')
   getProfile(@Request() req: { user: any }): any {
     return req.user; // Retorna os dados do usuário autenticado
+  }
+
+  @Post('refresh')
+  async refresh(@Body() body: { userId: number; refreshToken: string }) {
+    return this.authService.refreshToken(body.userId, body.refreshToken);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Post('logout')
+  async logout(@Req() req: { user: { id: number } }) {
+    const userId = req.user.id;
+    return this.authService.logout(userId);
   }
 }
