@@ -6,6 +6,7 @@ import { ConfigModule } from '@nestjs/config';
 import { UsersModule } from './users/users.module';
 import { ProductsModule } from './products/products.module';
 import { AuditMiddleware } from './middleware/audit.middleware';
+import { LogCompressionService } from '../logs/log-compression.service'; // Importa o serviço de compressão de logs
 
 @Module({
   imports: [
@@ -15,7 +16,7 @@ import { AuditMiddleware } from './middleware/audit.middleware';
     ProductsModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, LogCompressionService], // Adiciona o serviço de compressão de logs
 })
 export class AppModule {
   configure(consumer: MiddlewareConsumer) {
