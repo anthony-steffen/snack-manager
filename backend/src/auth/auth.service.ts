@@ -60,7 +60,7 @@ export class AuthService {
 
     const payload = { sub: user.id, email: user.email, role: user.role };
     const accessToken = this.jwtService.sign(payload, {
-      expiresIn: '15', // Define o tempo de expiração do token
+      expiresIn: process.env.JWT_ACCESS_EXPIRATION || '15m',
     });
 
     const refreshToken = this.jwtService.sign(payload, {
