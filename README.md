@@ -1,1 +1,1 @@
-# snack-manager-teste
+# snack-manager
