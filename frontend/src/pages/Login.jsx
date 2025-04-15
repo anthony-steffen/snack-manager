@@ -34,7 +34,6 @@ export default function Login() {
       `}
     >
       <Box
-        // bg="blackAlpha.300"
         p={12}
         rounded="2xl"  
         boxShadow="2xl"
@@ -47,7 +46,6 @@ export default function Login() {
             textAlign="center"
             fontWeight="bold"
             fontSize="2xl"
-            className="gray.300"
             mb={4}
 
           >
