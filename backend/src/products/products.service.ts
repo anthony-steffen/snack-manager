@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
@@ -8,8 +12,30 @@ export class ProductsService {
   constructor(private prisma: PrismaService) {}
 
   async create(dto: CreateProductDto) {
+    // Verifica duplicação por nome ou código
+    const existing = await this.prisma.product.findFirst({
+      where: {
+        OR: [{ name: dto.name }, { code: dto.code }],
+      },
+    });
+
+    if (existing) {
+      throw new ConflictException(
+        'A product with the same name or code already exists.',
+      );
+    }
+
+    // Cria o produto
     return this.prisma.product.create({
-      data: dto,
+      data: {
+        code: dto.code,
+        name: dto.name,
+        category: dto.category,
+        description: dto.description,
+        price: dto.price,
+        imgUrl: dto.imageUrl,
+        stock: dto.stock,
+      },
     });
   }
   async findAll() {

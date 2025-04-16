@@ -1,30 +1,35 @@
-import { IsNotEmpty, IsNumber, IsPositive, IsString } from 'class-validator';
+import {
+  IsNotEmpty,
+  IsNumber,
+  IsPositive,
+  IsString,
+  Length,
+} from 'class-validator';
 
 export class CreateProductDto {
-  @IsNumber()
-  @IsPositive()
-  @IsNotEmpty()
-  id: number;
+  @IsString()
+  @Length(4, 4, { message: 'Code must be exactly 4 digits' })
+  code: number;
 
   @IsString()
   @IsNotEmpty()
   name: string;
 
+  @IsString()
+  @IsNotEmpty()
+  category: string;
+
   @IsNumber()
   @IsPositive()
-  @IsNotEmpty()
   price: number;
 
   @IsString()
-  @IsNotEmpty()
   description: string;
 
   @IsString()
-  @IsNotEmpty()
   imageUrl: string;
 
   @IsNumber()
   @IsPositive()
-  @IsNotEmpty()
   stock: number;
 }

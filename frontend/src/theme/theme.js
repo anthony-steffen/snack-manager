@@ -39,10 +39,6 @@ const theme = extendTheme({
         color: props.colorMode === 'dark' ? '#ffffffde' : '#213547',
         fontFamily: 'system-ui, Avenir, Helvetica, Arial, sans-serif',
       },
-      '::selection': {
-        backgroundColor: '#ff80c1',
-        color: '#fff',
-      },
     }),
   },
   components: { 
@@ -71,7 +67,12 @@ const theme = extendTheme({
     },
     Input: {
       baseStyle: {
-        borderColor: 'gray.400',
+        field: {
+          borderRadius: '8px',
+          _placeholder: {
+            color: 'gray.500',
+          },
+        },
       },
     },
   },
