@@ -5,6 +5,7 @@ import Register from "./pages/Register"
 import Products from "./pages/Products"
 import { ProtectedRoute } from "./components/ProtectedRoute"
 import ColorModeToggle from "./components/ColorModeToggle"
+import AuthenticatedLayout from "./components/AuthenticatedLayout"
 
 function App() {
   return (
@@ -20,7 +21,7 @@ function App() {
               <Products />
             </ProtectedRoute>
           }
-        />
+          />
       </Routes>
     </Router>
   )

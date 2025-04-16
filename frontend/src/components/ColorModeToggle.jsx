@@ -5,7 +5,7 @@ import { IoMdMoon, IoMdSunny} from "react-icons/io";
 export default function ColorModeToggle() {
   const { toggleColorMode } = useColorMode()
   const icon = useColorModeValue(<IoMdMoon />, <IoMdSunny />)
-  const iconColor = useColorModeValue('blue.700', 'yellow.400')
+  const iconColor = useColorModeValue('blue.600', 'yellow.400')
   // const icon = useColorModeValue('🌙', '☀️')
   const label = useColorModeValue('dark', 'light')
 
@@ -18,7 +18,7 @@ export default function ColorModeToggle() {
       outline='ghost'
       bg={useColorModeValue('white', '#242424')}
       position="absolute"
-      top="2"
+      top="7"
       right="4"
       size="sm"
       _hover={{

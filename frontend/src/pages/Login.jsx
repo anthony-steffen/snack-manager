@@ -9,8 +9,9 @@ import {
   Text,
   useToast,
 } from '@chakra-ui/react'
-import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form'
+import { useNavigate } from 'react-router-dom';
+import { useAuth  } from '../contexts/AuthContext';
 
 
 
@@ -24,46 +25,31 @@ const fadeInUp = keyframes`
 `
 
 export default function Login() {
-  const { register, handleSubmit, formState: { errors } } = useForm();
   const toast = useToast();
   const navigate = useNavigate();
+  const { login } = useAuth(); // função do contexto
+  const { 
+    register, 
+    handleSubmit, 
+    formState: { errors } }
+   = useForm();
 
-  const onSubmit = async (data) => {
+   const onSubmit = async (data) => {
     try {
-      const response = await fetch('http://localhost:4000/auth/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data),
-      });
-
-      const result = await response.json();
-
-      if (response.ok) {
-        localStorage.setItem('accessToken', result.accessToken);
-
-        toast({
-          title: 'Login realizado com sucesso!',
-          status: 'success',
-          duration: 3000,
-          isClosable: true,
-        });
-
-        navigate('/produtos');
-      } else {
-        toast({
-          title: 'Erro ao entrar',
-          description: result.message || 'Credenciais inválidas',
-          status: 'error',
-          duration: 3000,
-          isClosable: true,
-        });
-      }
-    } catch (err) {
+      await login(data); // função do contexto
       toast({
-        title: 'Erro no servidor',
-        description: err.message,
-        status: 'error',
+        title: "Login realizado com sucesso",
+        status: "success",
         duration: 3000,
+        isClosable: true,
+      });
+      navigate("/products");
+    } catch (error) {
+      toast({
+        title: "Erro no login",
+        description: error.message || "Verifique suas credenciais.",
+        status: "error",
+        duration: 4000,
         isClosable: true,
       });
     }
@@ -88,7 +74,7 @@ export default function Login() {
         maxWidth="400px"
       >
         <form onSubmit={handleSubmit(onSubmit)}>
-          <Stack spacing={6}>
+          <Stack spacing={3}>
             <Heading
               textAlign="center"
               fontWeight="bold"

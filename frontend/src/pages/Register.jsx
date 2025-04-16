@@ -99,7 +99,7 @@ export default function Register() {
 								borderColor="gray.400"
 							/>
 							{errors.name && (
-								<Text color="red.500" fontSize="sm">
+								<Text color="red.500" fontSize="sm" mt={2}>
 									{errors.name.message}
 								</Text>
 							)}
@@ -120,7 +120,7 @@ export default function Register() {
 								borderColor="gray.400"
 							/>
 							{errors.email && (
-								<Text color="red.500" fontSize="sm">
+								<Text color="red.500" fontSize="sm" mt={2}>
 									{errors.email.message}
 								</Text>
 							)}
@@ -142,7 +142,7 @@ export default function Register() {
                 sword"
 							/>
 							{errors.password && (
-								<Text color="red.500" fontSize="sm">
+								<Text color="red.500" fontSize="sm" mt={2}>
 									{errors.password.message}
 								</Text>
 							)}
@@ -162,13 +162,13 @@ export default function Register() {
                 sword"
 							/>
 							{errors.confirmPassword && (
-								<Text color="red.500" fontSize="sm">
+								<Text color="red.500" fontSize="sm" mt={2}>
 									{errors.confirmPassword.message}
 								</Text>
 							)}
 						</Box>
 
-						<Button type="submit" colorScheme="orange">
+						<Button type="submit">
 							Registrar
 						</Button>
 					</Stack>
