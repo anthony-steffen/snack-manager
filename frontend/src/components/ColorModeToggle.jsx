@@ -21,7 +21,9 @@ export default function ColorModeToggle() {
       top="2"
       right="4"
       size="sm"
-      _hover='none'
+      _hover={{
+        color: iconColor,
+      }}
       transition="color 0.2s ease-in-out"
       fontSize="2xl"
       fontWeight="bold"

@@ -34,7 +34,7 @@ export default function Register() {
 
 	const onSubmit = async (data) => {
 		try {
-			const response = await fetch("http://localhost:3000/auth/register", {
+			const response = await fetch("http://localhost:4000/auth/register", {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
 				body: JSON.stringify(data),
@@ -79,6 +79,7 @@ export default function Register() {
 				animation: ${fadeInUp} 0.6s ease forwards;
 			`}>
 			<Box
+			  border={'1px solid #ccc'}
 				p={12}
 				rounded="2xl"
 				boxShadow="2xl"
