@@ -6,6 +6,7 @@ import {
   FormLabel,
   Heading,
   Input,
+  Select,
   Stack,
   Table,
   Tbody,
@@ -13,126 +14,215 @@ import {
   Th,
   Thead,
   Tr,
-  useToast,
-} from '@chakra-ui/react';
-import { useEffect, useState } from 'react';
+  AlertDialog,
+  AlertDialogOverlay,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogBody,
+  AlertDialogFooter,
+} from "@chakra-ui/react";
+import { useRef, useState } from "react";
+import { useProducts } from "../../hooks/useProducts";
 
 export default function ProductsPage() {
-  const [products, setProducts] = useState([]);
-  const [name, setName] = useState('');
-  const [price, setPrice] = useState('');
-  const toast = useToast();
+  const {
+    products,
+    formData,
+    isEditing,
+    handleInputChange,
+    handleAddProduct,
+    handleEdit,
+    handleUpdateProduct,
+    handleDeleteProduct,
+  } = useProducts();
 
-  // Fetch existing products from backend
-  useEffect(() => {
-    fetchProducts();
-  }, []);
+  const [isOpen, setIsOpen] = useState(false);
+  const [productToDelete, setProductToDelete] = useState(null);
+  const cancelRef = useRef();
+  
 
-  const fetchProducts = async () => {
-    try {
-      const response = await fetch('http://localhost:4000/products', {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
-        },
-      });
-
-      if (!response.ok) throw new Error('Failed to fetch products');
-      const data = await response.json();
-      setProducts(data);
-    } catch (error) {
-      toast({
-        title: 'Error loading products',
-        description: error.message,
-        status: 'error',
-        duration: 3000,
-        isClosable: true,
-      });
-    }
+  const confirmDelete = (product) => {
+    setProductToDelete(product);
+    setIsOpen(true);
   };
-
-  const handleAddProduct = async () => {
-    try {
-      const response = await fetch('http://localhost:4000/products', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
-        },
-        body: JSON.stringify({ name, price: parseFloat(price) }),
-      });
-
-      if (!response.ok) throw new Error('Failed to add product');
-
-      const newProduct = await response.json();
-      setProducts([...products, newProduct]);
-      setName('');
-      setPrice('');
-      toast({
-        title: 'Product added',
-        status: 'success',
-        duration: 2000,
-        isClosable: true,
-      });
-    } catch (error) {
-      toast({
-        title: 'Error adding product',
-        description: error.message,
-        status: 'error',
-        duration: 3000,
-        isClosable: true,
-      });
-    }
+  
+  const onDeleteConfirmed = () => {
+    handleDeleteProduct(productToDelete.id);
+    setIsOpen(false);
   };
-
+  
   return (
-    <Box maxW="7xl" mx="auto" p={6}>
-      <Heading mb={3}>Cadastro de Produtos</Heading>
+    <Box
+      border={"1px solid rgb(24, 24, 24)"}
+      mx="auto"
+      p={6}
+      w={{ base: "100%", md: "40%", lg: "20%" }}
+      borderRadius="lg"
+      boxShadow="md"
+    >
+      <Heading mb={4} textAlign={"center"}>
+        Product Registration
+      </Heading>
 
-      {/* Product Form */}
-      <Box mb={8} p={6} borderRadius="lg" boxShadow="md" border={'1px solid rgb(24, 24, 24)'}>
+      <Box
+        mb={8}
+        p={6}
+        borderRadius="lg"
+        boxShadow="md"
+        border={"1px solid rgb(24, 24, 24)"}
+      >
         <Stack spacing={4}>
-          <FormControl>
-            <FormLabel>Product Name</FormLabel>
+          <FormControl isRequired>
+            <FormLabel>Code (4 digits)</FormLabel>
             <Input
-              placeholder="Enter name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
+              name="code"
+              type="number"
+              value={formData.code}
+              onChange={handleInputChange}
+              maxLength={4}
             />
           </FormControl>
-          <FormControl>
+
+          <FormControl isRequired>
+            <FormLabel>Name</FormLabel>
+            <Input
+              name="name"
+              value={formData.name}
+              onChange={handleInputChange}
+            />
+          </FormControl>
+
+          <FormControl isRequired>
+            <FormLabel>Category</FormLabel>
+            <Select
+              name="category"
+              placeholder="Select category"
+              value={formData.category}
+              onChange={handleInputChange}
+            >
+              <option value="Bebida">Bebida</option>
+              <option value="Salgados">Salgados</option>
+              <option value="Bolos">Bolos</option>
+              <option value="Doces">Doces</option>
+            </Select>
+          </FormControl>
+
+          <FormControl isRequired>
+            <FormLabel>Description</FormLabel>
+            <Input
+              name="description"
+              value={formData.description}
+              onChange={handleInputChange}
+            />
+          </FormControl>
+
+          <FormControl isRequired>
             <FormLabel>Price</FormLabel>
             <Input
-              placeholder="Enter price"
+              name="price"
               type="number"
-              value={price}
-              onChange={(e) => setPrice(e.target.value)}
+              value={formData.price}
+              onChange={handleInputChange}
             />
           </FormControl>
-          <Button colorScheme="blue" onClick={handleAddProduct}>
-            Add Product
+
+          <FormControl isRequired>
+            <FormLabel>Image URL</FormLabel>
+            <Input
+              name="imgUrl"
+              value={formData.imgUrl}
+              onChange={handleInputChange}
+            />
+          </FormControl>
+
+          <FormControl isRequired>
+            <FormLabel>Stock</FormLabel>
+            <Input
+              name="stock"
+              type="number"
+              value={formData.stock}
+              onChange={handleInputChange}
+            />
+          </FormControl>
+
+          <Button
+            onClick={isEditing ? handleUpdateProduct : handleAddProduct}
+            size="lg"
+          >
+            {isEditing ? "Update Product" : "Add Product"}
           </Button>
         </Stack>
       </Box>
 
-      {/* Product Table */}
-      <Table variant="striped" colorScheme="gray">
-        <Thead>
-          <Tr>
-            <Th>ID</Th>
-            <Th>Name</Th>
-            <Th>Price</Th>
-          </Tr>
-        </Thead>
-        <Tbody>
-          {products.map((product) => (
-            <Tr key={product.id}>
-              <Td>{product.id}</Td>
-              <Td>{product.name}</Td>
-              <Td>${product.price.toFixed(2)}</Td>
+      <Box overflowX="auto" mt={4} borderRadius="sm">
+        <Table variant="striped" colorScheme="gray" size="sm" minW="600px">
+          <Thead>
+            <Tr bg={"#f7f7f7"}>
+              <Th>Code</Th>
+              <Th>Name</Th>
+              <Th>Category</Th>
+              <Th>Price</Th>
+              <Th>Stock</Th>
+              <Th>Actions</Th>
             </Tr>
-          ))}
-        </Tbody>
-      </Table>
+          </Thead>
+          <Tbody>
+            {products.map((product) => (
+              <Tr key={product.id}>
+                <Td>{product.code}</Td>
+                <Td>{product.name}</Td>
+                <Td>{product.category}</Td>
+                <Td>${product.price.toFixed(2)}</Td>
+                <Td>{product.stock}</Td>
+                <Td>
+                  <Button
+                    size="sm"
+                    mr={2}
+                    onClick={() => handleEdit(product)}
+                  >
+                    Edit
+                  </Button>
+                  <Button
+                    size="sm"
+                    colorScheme="red"
+                    onClick={() => confirmDelete(product)}
+                  >
+                    Delete
+                  </Button>
+                </Td>
+              </Tr>
+            ))}
+          </Tbody>
+        </Table>
+      </Box>
+
+      {/* AlertDialog para confirmação */}
+      <AlertDialog
+  isOpen={isOpen}
+  leastDestructiveRef={cancelRef}
+  onClose={() => setIsOpen(false)}
+>
+  <AlertDialogOverlay>
+    <AlertDialogContent>
+      <AlertDialogHeader fontSize="lg" fontWeight="bold">
+        Confirm Deletion
+      </AlertDialogHeader>
+
+      <AlertDialogBody>
+        Are you sure you want to delete the product "{productToDelete?.name}"?
+      </AlertDialogBody>
+
+      <AlertDialogFooter>
+        <Button ref={cancelRef} onClick={() => setIsOpen(false)}>
+          Cancel
+        </Button>
+        <Button colorScheme="red" onClick={onDeleteConfirmed} ml={3}>
+          Delete
+        </Button>
+      </AlertDialogFooter>
+    </AlertDialogContent>
+  </AlertDialogOverlay>
+</AlertDialog>
     </Box>
   );
 }

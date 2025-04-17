@@ -20,7 +20,7 @@ CREATE TABLE `Product` (
     `category` VARCHAR(191) NOT NULL,
     `description` VARCHAR(191) NULL,
     `price` DOUBLE NOT NULL,
-    `imgUrl` VARCHAR(191) NULL,
+    `imgUrl` VARCHAR(291) NULL,
     `stock` INTEGER NOT NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
