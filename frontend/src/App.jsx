@@ -5,6 +5,7 @@ import Register from "./pages/Register"
 import Products from "./pages/products/Products"
 import { ProtectedRoute } from "./components/ProtectedRoute"
 import ColorModeToggle from "./components/ColorModeToggle"
+import Home from "./pages/Home"
 import AuthenticatedLayout from "./components/AuthenticatedLayout"
 
 function App() {
@@ -14,6 +15,7 @@ function App() {
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/home" element={<Home />} />
         <Route
           path="/products"
           element={

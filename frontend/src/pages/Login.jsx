@@ -43,7 +43,7 @@ export default function Login() {
         duration: 3000,
         isClosable: true,
       });
-      navigate("/products");
+      navigate("/home");
     } catch (error) {
       toast({
         title: "Erro no login",
