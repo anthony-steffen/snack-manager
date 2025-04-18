@@ -31,14 +31,50 @@ enum Role {
 }
 
   model Product {
-  id        Int      @id @default(autoincrement())
-  code      Int   @unique // 4 dígitos únicos
-  name      String
-  category  String
+  id          Int       @id @default(autoincrement())
+  code        Int       @unique
+  name        String
   description String?
-  price     Float
-  imgUrl    String?
-  stock     Int
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  price       Float
+  imgUrl      String?
+  stock       Int
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  categoryId  Int
+  category    Category  @relation(fields: [categoryId], references: [id])
+
+  recipe      Recipe?
+}
+
+model Category {
+  id       Int       @id @default(autoincrement())
+  name     String    @unique
+  type     String
+  products Product[]
+}
+
+model Ingredient {
+  id       Int      @id @default(autoincrement())
+  name     String   @unique
+  unitPrice Float
+  items    RecipeItem[]
+}
+
+model Recipe {
+  id         Int         @id @default(autoincrement())
+  productId  Int         @unique    // ✅ Torna o relacionamento 1:1 válido
+  product    Product     @relation(fields: [productId], references: [id])
+  items      RecipeItem[]
+  createdAt  DateTime    @default(now())
+}
+
+
+model RecipeItem {
+  id          Int        @id @default(autoincrement())
+  quantity    Float
+  ingredient  Ingredient @relation(fields: [ingredientId], references: [id])
+  ingredientId Int
+  recipe      Recipe     @relation(fields: [recipeId], references: [id])
+  recipeId    Int
 }
