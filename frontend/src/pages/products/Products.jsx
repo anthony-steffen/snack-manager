@@ -14,15 +14,9 @@ import {
   Th,
   Thead,
   Tr,
-  AlertDialog,
-  AlertDialogOverlay,
-  AlertDialogContent,
-  AlertDialogHeader,
-  AlertDialogBody,
-  AlertDialogFooter,
 } from "@chakra-ui/react";
-import { useRef, useState } from "react";
 import { useProducts } from "../../hooks/useProducts";
+import { useCategories } from "../../hooks/useCategories";
 
 export default function ProductsPage() {
   const {
@@ -36,21 +30,8 @@ export default function ProductsPage() {
     handleDeleteProduct,
   } = useProducts();
 
-  const [isOpen, setIsOpen] = useState(false);
-  const [productToDelete, setProductToDelete] = useState(null);
-  const cancelRef = useRef();
-  
+  const { categories } = useCategories();
 
-  const confirmDelete = (product) => {
-    setProductToDelete(product);
-    setIsOpen(true);
-  };
-  
-  const onDeleteConfirmed = () => {
-    handleDeleteProduct(productToDelete.id);
-    setIsOpen(false);
-  };
-  
   return (
     <Box
       border={"1px solid rgb(24, 24, 24)"}
@@ -64,6 +45,7 @@ export default function ProductsPage() {
         Product Registration
       </Heading>
 
+      {/* Formulário */}
       <Box
         mb={8}
         p={6}
@@ -95,15 +77,16 @@ export default function ProductsPage() {
           <FormControl isRequired>
             <FormLabel>Category</FormLabel>
             <Select
-              name="category"
+              name="categoryId"
               placeholder="Select category"
-              value={formData.category}
+              value={formData.categoryId}
               onChange={handleInputChange}
             >
-              <option value="Bebida">Bebida</option>
-              <option value="Salgados">Salgados</option>
-              <option value="Bolos">Bolos</option>
-              <option value="Doces">Doces</option>
+              {categories.map((category) => (
+                <option key={category.id} value={category.id}>
+                  {category.name}
+                </option>
+              ))}
             </Select>
           </FormControl>
 
@@ -154,6 +137,7 @@ export default function ProductsPage() {
         </Stack>
       </Box>
 
+      {/* Tabela */}
       <Box overflowX="auto" mt={4} borderRadius="sm">
         <Table variant="striped" colorScheme="gray" size="sm" minW="600px">
           <Thead>
@@ -171,21 +155,18 @@ export default function ProductsPage() {
               <Tr key={product.id}>
                 <Td>{product.code}</Td>
                 <Td>{product.name}</Td>
-                <Td>{product.category}</Td>
+                <Td>{product.category?.name}</Td>
                 <Td>${product.price.toFixed(2)}</Td>
                 <Td>{product.stock}</Td>
                 <Td>
-                  <Button
-                    size="sm"
-                    mr={2}
-                    onClick={() => handleEdit(product)}
-                  >
+                  <Button size="sm" onClick={() => handleEdit(product)}>
                     Edit
                   </Button>
                   <Button
                     size="sm"
                     colorScheme="red"
-                    onClick={() => confirmDelete(product)}
+                    ml={2}
+                    onClick={() => handleDeleteProduct(product.id)}
                   >
                     Delete
                   </Button>
@@ -195,34 +176,6 @@ export default function ProductsPage() {
           </Tbody>
         </Table>
       </Box>
-
-      {/* AlertDialog para confirmação */}
-      <AlertDialog
-  isOpen={isOpen}
-  leastDestructiveRef={cancelRef}
-  onClose={() => setIsOpen(false)}
->
-  <AlertDialogOverlay>
-    <AlertDialogContent>
-      <AlertDialogHeader fontSize="lg" fontWeight="bold">
-        Confirm Deletion
-      </AlertDialogHeader>
-
-      <AlertDialogBody>
-        Are you sure you want to delete the product "{productToDelete?.name}"?
-      </AlertDialogBody>
-
-      <AlertDialogFooter>
-        <Button ref={cancelRef} onClick={() => setIsOpen(false)}>
-          Cancel
-        </Button>
-        <Button colorScheme="red" onClick={onDeleteConfirmed} ml={3}>
-          Delete
-        </Button>
-      </AlertDialogFooter>
-    </AlertDialogContent>
-  </AlertDialogOverlay>
-</AlertDialog>
     </Box>
   );
 }

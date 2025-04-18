@@ -6,7 +6,7 @@ export function useProducts() {
   const [formData, setFormData] = useState({
     code: "",
     name: "",
-    category: "",
+    categoryId: "",
     description: "",
     price: "",
     imgUrl: "",
@@ -46,7 +46,7 @@ export function useProducts() {
     setFormData({
       code: "",
       name: "",
-      category: "",
+      categoryId: "",
       description: "",
       price: "",
       imgUrl: "",
@@ -67,6 +67,7 @@ export function useProducts() {
           code: Number(formData.code),
           price: parseFloat(formData.price),
           stock: Number(formData.stock),
+          categoryId: Number(formData.categoryId),
         }),
       });
 
@@ -90,10 +91,10 @@ export function useProducts() {
     setFormData({
       code: product.code.toString(),
       name: product.name,
-      category: product.category,
-      description: product.description,
+      categoryId: product.category?.id?.toString() || "",
+      description: product.description || "",
       price: product.price.toString(),
-      imgUrl: product.imgUrl,
+      imgUrl: product.imgUrl || "",
       stock: product.stock.toString(),
     });
   };
@@ -111,6 +112,7 @@ export function useProducts() {
           code: Number(formData.code),
           price: parseFloat(formData.price),
           stock: Number(formData.stock),
+          categoryId: Number(formData.categoryId),
         }),
       });
 
@@ -132,7 +134,7 @@ export function useProducts() {
       showToast("Erro", "ID do produto não informado", "error");
       return;
     }
-  
+
     try {
       const res = await fetch(`http://localhost:4000/products/${id}`, {
         method: "DELETE",
@@ -140,9 +142,9 @@ export function useProducts() {
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },
       });
-  
+
       if (!res.ok) throw new Error("Erro ao deletar o produto");
-  
+
       setProducts((prev) => prev.filter((p) => p.id !== id));
       showToast("Produto deletado com sucesso", "", "success");
     } catch (err) {
