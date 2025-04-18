@@ -15,9 +15,9 @@ export class CreateProductDto {
   @IsNotEmpty()
   name: string;
 
-  @IsString()
+  @IsNumber()
   @IsNotEmpty()
-  category: string;
+  categoryId: number;
 
   @IsNumber()
   @IsPositive()
@@ -27,7 +27,7 @@ export class CreateProductDto {
   description: string;
 
   @IsString()
-  imageUrl: string;
+  imgUrl: string;
 
   @IsNumber()
   @IsPositive()

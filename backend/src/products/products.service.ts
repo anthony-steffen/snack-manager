@@ -30,10 +30,12 @@ export class ProductsService {
       data: {
         code: dto.code,
         name: dto.name,
-        category: dto.category,
+        category: {
+          connect: { id: dto.categoryId },
+        },
         description: dto.description,
         price: dto.price,
-        imgUrl: dto.imageUrl,
+        imgUrl: dto.imgUrl,
         stock: dto.stock,
       },
     });
