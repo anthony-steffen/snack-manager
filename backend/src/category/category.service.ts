@@ -1,26 +1,61 @@
-import { Injectable } from '@nestjs/common';
+import { ConflictException, Injectable } from '@nestjs/common';
+import { PrismaService } from '../../prisma/prisma.service';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 
 @Injectable()
 export class CategoryService {
-  create(createCategoryDto: CreateCategoryDto) {
-    return `This action adds a new category , name: ${createCategoryDto.name}`;
+  constructor(private prisma: PrismaService) {}
+
+  async create(createCategoryDto: CreateCategoryDto) {
+    const existing = await this.prisma.category.findFirst({
+      where: {
+        name: createCategoryDto.name,
+      },
+    });
+    if (existing) {
+      throw new ConflictException(
+        'A category with the same name already exists.',
+      );
+    }
+    return await this.prisma.category.create({
+      data: {
+        name: createCategoryDto.name,
+        type: createCategoryDto.type,
+      },
+    });
   }
 
-  findAll() {
-    return `This action returns all category`;
+  async findAll() {
+    return await this.prisma.category.findMany({
+      include: {
+        products: true,
+      },
+    });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} category`;
+  async findOne(id: number) {
+    return await this.prisma.category.findUnique({
+      where: { id },
+      include: {
+        products: true,
+      },
+    });
   }
 
-  update(id: number, updateCategoryDto: UpdateCategoryDto) {
-    return `This action updates a #${id} category with name: ${updateCategoryDto.name}`;
+  async update(id: number, updateCategoryDto: UpdateCategoryDto) {
+    return await this.prisma.category.update({
+      where: { id },
+      data: {
+        name: updateCategoryDto.name,
+        type: updateCategoryDto.type,
+      },
+    });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} category`;
+  async remove(id: number) {
+    return await this.prisma.category.delete({
+      where: { id },
+    });
   }
 }

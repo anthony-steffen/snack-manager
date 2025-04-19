@@ -16,14 +16,15 @@ export class CreateProductDto {
   name: string;
 
   @IsNumber()
-  @IsNotEmpty()
   categoryId: number;
 
   @IsNumber()
   @IsPositive()
+  @IsNotEmpty()
   price: number;
 
   @IsString()
+  @IsNotEmpty()
   description: string;
 
   @IsString()
