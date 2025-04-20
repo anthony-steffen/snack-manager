@@ -38,6 +38,9 @@ export class ProductsService {
         imgUrl: dto.imgUrl,
         stock: dto.stock,
       },
+      include: {
+        category: true,
+      },
     });
   }
   async findAll() {
@@ -61,7 +64,20 @@ export class ProductsService {
     }
     return this.prisma.product.update({
       where: { id: Number(id) },
-      data: dto,
+      data: {
+        code: dto.code,
+        name: dto.name,
+        description: dto.description,
+        price: dto.price,
+        imgUrl: dto.imgUrl,
+        stock: dto.stock,
+        category: {
+          connect: { id: dto.categoryId },
+        },
+      },
+      include: {
+        category: true,
+      },
     });
   }
   async remove(id: number) {

@@ -1,24 +1,48 @@
+// src/hooks/useProducts.js
 import { useEffect, useState } from "react";
 import { useToast } from "@chakra-ui/react";
 
 export function useProducts() {
-  const [products, setProducts] = useState([]);
-  const [formData, setFormData] = useState({
-    code: "",
-    name: "",
-    categoryId: "",
-    description: "",
-    price: "",
-    imgUrl: "",
-    stock: "",
-  });
-  const [isEditing, setIsEditing] = useState(false);
-  const [editingId, setEditingId] = useState(null);
   const toast = useToast();
+
+  const [products, setProducts] = useState([]);
+  const [formData, setFormData] = useState(() => {
+    const stored = localStorage.getItem("productFormData");
+    return stored
+      ? JSON.parse(stored)
+      : {
+          code: "",
+          name: "",
+          categoryId: "",
+          description: "",
+          price: "",
+          imgUrl: "",
+          stock: "",
+        };
+  });
+
+  const [isEditing, setIsEditing] = useState(() => {
+    return localStorage.getItem("productIsEditing") === "true";
+  });
+
+  const [editingId, setEditingId] = useState(() => {
+    const id = localStorage.getItem("productEditingId");
+    return id ? Number(id) : null;
+  });
 
   useEffect(() => {
     fetchProducts();
   }, []);
+
+  useEffect(() => {
+    localStorage.setItem("productFormData", JSON.stringify(formData));
+    localStorage.setItem("productIsEditing", isEditing);
+    if (editingId) {
+      localStorage.setItem("productEditingId", editingId.toString());
+    } else {
+      localStorage.removeItem("productEditingId");
+    }
+  }, [formData, isEditing, editingId]);
 
   const fetchProducts = async () => {
     try {
@@ -52,9 +76,28 @@ export function useProducts() {
       imgUrl: "",
       stock: "",
     });
+    localStorage.removeItem("productFormData");
+    localStorage.removeItem("productIsEditing");
+    localStorage.removeItem("productEditingId");
+  };
+
+  const validateFields = () => {
+    if (
+      !formData.code ||
+      !formData.name ||
+      !formData.categoryId ||
+      !formData.price ||
+      !formData.stock
+    ) {
+      showToast("All fields are required", "", "warning");
+      return false;
+    }
+    return true;
   };
 
   const handleAddProduct = async () => {
+    if (!validateFields()) return;
+
     try {
       const res = await fetch("http://localhost:4000/products", {
         method: "POST",
@@ -100,6 +143,8 @@ export function useProducts() {
   };
 
   const handleUpdateProduct = async () => {
+    if (!validateFields()) return;
+
     try {
       const res = await fetch(`http://localhost:4000/products/${editingId}`, {
         method: "PATCH",
