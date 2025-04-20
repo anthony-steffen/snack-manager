@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  ValidationPipe,
 } from '@nestjs/common';
 import { IngredientService } from './ingredient.service';
 import { CreateIngredientDto } from './dto/create-ingredient.dto';
@@ -16,7 +17,7 @@ export class IngredientController {
   constructor(private readonly ingredientService: IngredientService) {}
 
   @Post()
-  create(@Body() createIngredientDto: CreateIngredientDto) {
+  create(@Body(ValidationPipe) createIngredientDto: CreateIngredientDto) {
     return this.ingredientService.create(createIngredientDto);
   }
 

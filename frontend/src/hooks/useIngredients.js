@@ -1,14 +1,42 @@
-// src/hooks/useIngredients.js
 import { useEffect, useState } from "react";
 import { useToast } from "@chakra-ui/react";
 
 export function useIngredients() {
   const [ingredients, setIngredients] = useState([]);
-  const [formData, setFormData] = useState({ name: "", unitPrice: "" });
-  const [isEditing, setIsEditing] = useState(false);
-  const [editingId, setEditingId] = useState(null);
+  const [formData, setFormData] = useState(() => {
+    const stored = localStorage.getItem("ingredientFormData");
+    return stored ? JSON.parse(stored) : { name: "", unitPrice: "" };
+  });
+
+  const [isEditing, setIsEditing] = useState(() => {
+    return localStorage.getItem("ingredientIsEditing") === "true";
+  });
+
+  const [editingId, setEditingId] = useState(() => {
+    const id = localStorage.getItem("ingredientEditingId");
+    return id ? Number(id) : null;
+  });
+
   const toast = useToast();
 
+  // 🔁 Persistência automática ao alterar formData
+  useEffect(() => {
+    localStorage.setItem("ingredientFormData", JSON.stringify(formData));
+  }, [formData]);
+
+  useEffect(() => {
+    localStorage.setItem("ingredientIsEditing", isEditing.toString());
+  }, [isEditing]);
+
+  useEffect(() => {
+    if (editingId !== null) {
+      localStorage.setItem("ingredientEditingId", editingId.toString());
+    } else {
+      localStorage.removeItem("ingredientEditingId");
+    }
+  }, [editingId]);
+
+  // 🔄 Carregamento inicial
   useEffect(() => {
     fetchIngredients();
   }, []);
@@ -34,6 +62,16 @@ export function useIngredients() {
 
   const handleAddIngredient = async () => {
     try {
+      if (!formData.name || !formData.unitPrice) {
+        showToast("Please fill in all fields", "", "warning");
+        return;
+      }
+
+      if (isEditing) {
+        await handleUpdateIngredient();
+        return;
+      }
+
       const res = await fetch("http://localhost:4000/ingredients", {
         method: "POST",
         headers: {
@@ -45,6 +83,9 @@ export function useIngredients() {
           unitPrice: parseFloat(formData.unitPrice),
         }),
       });
+
+      if (!res.ok) throw new Error("Failed to add ingredient");
+
       const newIngredient = await res.json();
       setIngredients((prev) => [...prev, newIngredient]);
       resetForm();
@@ -79,6 +120,9 @@ export function useIngredients() {
           }),
         }
       );
+
+      if (!res.ok) throw new Error("Failed to update ingredient");
+
       const updated = await res.json();
       setIngredients((prev) =>
         prev.map((i) => (i.id === updated.id ? updated : i))
@@ -98,6 +142,7 @@ export function useIngredients() {
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },
       });
+
       setIngredients((prev) => prev.filter((i) => i.id !== id));
       showToast("Ingredient deleted", "", "success");
     } catch (err) {
@@ -109,6 +154,9 @@ export function useIngredients() {
     setFormData({ name: "", unitPrice: "" });
     setIsEditing(false);
     setEditingId(null);
+    localStorage.removeItem("ingredientFormData");
+    localStorage.removeItem("ingredientIsEditing");
+    localStorage.removeItem("ingredientEditingId");
   };
 
   const showToast = (title, description, status) => {
