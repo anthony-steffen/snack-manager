@@ -44,8 +44,13 @@ export class ProductsService {
     });
   }
   async findAll() {
-    return this.prisma.product.findMany();
+    return this.prisma.product.findMany({
+      include: {
+        category: true,
+      },
+    });
   }
+
   async findOne(id: string) {
     const product = await this.prisma.product.findUnique({
       where: { id: Number(id) },
@@ -55,6 +60,7 @@ export class ProductsService {
     }
     return product;
   }
+
   async update(id: string, dto: UpdateProductDto) {
     const product = await this.prisma.product.findUnique({
       where: { id: Number(id) },
