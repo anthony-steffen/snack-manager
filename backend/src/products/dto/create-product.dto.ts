@@ -9,7 +9,7 @@ import {
 export class CreateProductDto {
   @IsString()
   @Length(4, 4, { message: 'Code must be exactly 4 digits' })
-  code: number;
+  code: string;
 
   @IsString()
   @IsNotEmpty()

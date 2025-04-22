@@ -32,7 +32,7 @@ enum Role {
 
   model Product {
   id          Int       @id @default(autoincrement())
-  code        Int       @unique
+  code        String       @unique
   name        String
   description String?
   price       Float
@@ -72,9 +72,11 @@ model Recipe {
 
 model RecipeItem {
   id          Int        @id @default(autoincrement())
-  quantity    Float
-  ingredient  Ingredient @relation(fields: [ingredientId], references: [id])
-  ingredientId Int
-  recipe      Recipe     @relation(fields: [recipeId], references: [id])
   recipeId    Int
+  ingredientId Int
+  quantity    Float
+  recipe      Recipe     @relation(fields: [recipeId], references: [id])
+  ingredient  Ingredient @relation(fields: [ingredientId], references: [id])
+
+  @@unique([ingredientId, recipeId]) // Garante que o mesmo ingrediente não possa ser adicionado mais de uma vez na mesma receita
 }

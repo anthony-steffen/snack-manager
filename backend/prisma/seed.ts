@@ -52,7 +52,73 @@ async function main() {
     });
   }
 
+  const products = [
+    {
+      code: 'REF001',
+      name: 'Refrigerante Lata',
+      description: 'Refrigerante em lata de 350ml',
+      price: 3.5,
+      imgUrl: 'https://example.com/refrigerante-lata.jpg',
+      stock: 100,
+      category: { connect: { name: 'Bebidas' } },
+    },
+    {
+      code: 'REF002',
+      name: 'Suco Natural',
+      description: 'Suco natural de laranja de 500ml',
+      price: 4.0,
+      imgUrl: 'https://example.com/suco-natural.jpg',
+      stock: 50,
+      category: { connect: { name: 'Bebidas' } },
+    },
+    {
+      code: 'SAL001',
+      name: 'Coxinha',
+      description: 'Coxinha de frango com massa crocante',
+      price: 5.0,
+      imgUrl: 'https://example.com/coxinha.jpg',
+      stock: 30,
+      category: { connect: { name: 'Salgados' } },
+    },
+    {
+      code: 'SAL002',
+      name: 'Pão de Queijo',
+      description: 'Pão de queijo quentinho e saboroso',
+      price: 2.5,
+      imgUrl: 'https://example.com/pao-de-queijo.jpg',
+      stock: 20,
+      category: { connect: { name: 'Salgados' } },
+    },
+    {
+      code: 'BOL001',
+      name: 'Bolo de Chocolate',
+      description: 'Bolo de chocolate com cobertura cremosa',
+      price: 15.0,
+      imgUrl: 'https://example.com/bolo-chocolate.jpg',
+      stock: 10,
+      category: { connect: { name: 'Bolos' } },
+    },
+    {
+      code: 'DOC001',
+      name: 'Cocada',
+      description: 'Cocada de côco fresco e doce',
+      price: 3.0,
+      imgUrl: 'https://example.com/cocada.jpg',
+      stock: 25,
+      category: { connect: { name: 'Doces' } },
+    },
+  ];
+
+  for (const product of products) {
+    await prisma.product.upsert({
+      where: { code: product.code },
+      update: {},
+      create: product,
+    });
+  }
+
   console.log('✅ Seed finalizado com sucesso.');
+  console.log('✅ Produtos criados com sucesso.');
 }
 
 main()

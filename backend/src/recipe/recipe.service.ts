@@ -12,6 +12,16 @@ export class RecipeService {
   constructor(private prisma: PrismaService) {}
 
   async create(dto: CreateRecipeDto) {
+    // Verifica se o produto existe
+    const productExists = await this.prisma.product.findUnique({
+      where: { id: dto.productId },
+    });
+
+    if (!productExists) {
+      throw new NotFoundException('Product not found');
+    }
+
+    // Verifica se já existe uma receita para o produto
     const existing = await this.prisma.recipe.findUnique({
       where: { productId: dto.productId },
     });
@@ -20,6 +30,7 @@ export class RecipeService {
       throw new ConflictException('This product already has a recipe.');
     }
 
+    // Cria a receita
     return this.prisma.recipe.create({
       data: {
         productId: dto.productId,
