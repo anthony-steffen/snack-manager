@@ -2,6 +2,7 @@
 import {
   Box,
   Button,
+  Flex,
   FormControl,
   FormLabel,
   Heading,
@@ -17,6 +18,8 @@ import {
 } from "@chakra-ui/react";
 import { useProducts } from "../../hooks/useProducts";
 import { useCategories } from "../../hooks/useCategories";
+import { MdDelete } from "react-icons/md";
+import { FaPencil } from "react-icons/fa6";
 
 export default function ProductsPage() {
   const {
@@ -36,26 +39,28 @@ export default function ProductsPage() {
     <Box
       border={"1px solid rgb(24, 24, 24)"}
       mx="auto"
+      my={3}
       p={6}
-      w={{ base: "100%", md: "40%", lg: "20%" }}
+      w={{ base: "95%", md: "40%", lg: "20%" }}
       borderRadius="lg"
       boxShadow="md"
-    >
-      <Heading mb={4} textAlign={"center"}>
-        Product Registration
+      h={'100vh'}
+      >
+      <Heading mb={4} textAlign={"center"} fontSize={24}>
+       Registro de Produtos
       </Heading>
 
       {/* Formulário */}
       <Box
-        mb={8}
+        // mb={8}
         p={6}
         borderRadius="lg"
-        boxShadow="md"
+        boxShadow="lg"
         border={"1px solid rgb(24, 24, 24)"}
-      >
-        <Stack spacing={4}>
+        >
+         <Flex flexDir={"column"} gap={1}>
           <FormControl isRequired>
-            <FormLabel>Code (4 digits)</FormLabel>
+            <FormLabel mb={0} fontSize={14}>Code (4 digits)</FormLabel>
             <Input
               name="code"
               type="number"
@@ -66,7 +71,7 @@ export default function ProductsPage() {
           </FormControl>
 
           <FormControl isRequired>
-            <FormLabel>Name</FormLabel>
+          <FormLabel mb={0} fontSize={14}>Name</FormLabel>
             <Input
               name="name"
               value={formData.name}
@@ -74,8 +79,8 @@ export default function ProductsPage() {
             />
           </FormControl>
 
-          <FormControl isRequired>
-            <FormLabel>Category</FormLabel>
+          <FormControl isRequired boxSize={"border-box"}>
+            <FormLabel mb={0} fontSize={14}>Category</FormLabel>
             <Select
               name="categoryId"
               placeholder="Select category"
@@ -91,7 +96,7 @@ export default function ProductsPage() {
           </FormControl>
 
           <FormControl isRequired>
-            <FormLabel>Description</FormLabel>
+            <FormLabel mb={0} fontSize={14}>Description</FormLabel>
             <Input
               name="description"
               value={formData.description}
@@ -100,7 +105,7 @@ export default function ProductsPage() {
           </FormControl>
 
           <FormControl isRequired>
-            <FormLabel>Price</FormLabel>
+            <FormLabel mb={0} fontSize={14}>Price</FormLabel>
             <Input
               name="price"
               type="number"
@@ -109,17 +114,17 @@ export default function ProductsPage() {
             />
           </FormControl>
 
-          <FormControl isRequired>
-            <FormLabel>Image URL</FormLabel>
+          {/* <FormControl isRequired>
+            <FormLabel mb={0} fontSize={14}>Image URL</FormLabel>
             <Input
               name="imgUrl"
               value={formData.imgUrl}
               onChange={handleInputChange}
             />
-          </FormControl>
+          </FormControl> */}
 
           <FormControl isRequired>
-            <FormLabel>Stock</FormLabel>
+            <FormLabel mb={0} fontSize={14}>Stock</FormLabel>
             <Input
               name="stock"
               type="number"
@@ -130,23 +135,26 @@ export default function ProductsPage() {
 
           <Button
             onClick={isEditing ? handleUpdateProduct : handleAddProduct}
-            size="lg"
+            size="sm"
+            mx={"auto"}
+            w={120}
+            mt={2}
           >
             {isEditing ? "Update Product" : "Add Product"}
           </Button>
-        </Stack>
+        </Flex>
       </Box>
 
       {/* Tabela */}
       <Box overflowX="auto" mt={4} borderRadius="sm">
-        <Table variant="striped" colorScheme="gray" size="sm" minW="600px">
+        <Table variant="striped" colorScheme="gray" size="sm">
           <Thead>
             <Tr bg={"#f7f7f7"}>
               <Th>Code</Th>
               <Th>Name</Th>
               <Th>Category</Th>
               <Th>Price</Th>
-              <Th>Stock</Th>
+              <Th >Stock</Th>
               <Th>Actions</Th>
             </Tr>
           </Thead>
@@ -159,17 +167,10 @@ export default function ProductsPage() {
                 <Td>${product.price.toFixed(2)}</Td>
                 <Td>{product.stock}</Td>
                 <Td>
-                  <Button size="sm" onClick={() => handleEdit(product)}>
-                    Edit
-                  </Button>
-                  <Button
-                    size="sm"
-                    colorScheme="red"
-                    ml={2}
-                    onClick={() => handleDeleteProduct(product.id)}
-                  >
-                    Delete
-                  </Button>
+                   <Flex justifyContent="space-evenly">
+                <FaPencil color='#2B6CB0' fontSize={18} onClick={() => handleEdit(product)}/>
+                <MdDelete color= '#CF070A'fontSize={18} onClick={() => handleDeleteProduct(product.id)}/>
+                </Flex>
                 </Td>
               </Tr>
             ))}

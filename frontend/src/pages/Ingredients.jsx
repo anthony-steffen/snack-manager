@@ -55,16 +55,16 @@ export default function IngredientsPage() {
 
   return (
     <Box
-      mt={16}
-      mb={8}
-      mx="auto"
-      p={6}
-      w={{ base: "90%", md: "50%", lg: "30%" }}
-      borderRadius="lg"
-      boxShadow="md"
-      border={'1px solid rgb(24, 24, 24)'}
+    border={"1px solid rgb(24, 24, 24)"}
+    mx="auto"
+    my={3}
+    p={6}
+    w={{ base: "95%", md: "40%", lg: "20%" }}
+    borderRadius="lg"
+    boxShadow="md"
+    h={'100vh'}
     >
-      <Heading mb={6} textAlign="center">
+      <Heading mb={6} textAlign="center" fontSize={24}>
         Manage Ingredients
       </Heading>
 
@@ -90,6 +90,10 @@ export default function IngredientsPage() {
             />
           </FormControl>
           <Button
+          size="sm"
+          mx={"auto"}
+          w={120}
+          mt={2}
             onClick={isEditing ? handleUpdateIngredient : handleAddIngredient}
           >
             {isEditing ? "Update" : "Add"}
@@ -113,7 +117,7 @@ export default function IngredientsPage() {
               <Td>{ingredient.name}</Td>
               <Td>${ingredient.unitPrice.toFixed(2)}</Td>
               <Td>
-                <Flex justifyContent="space-around">
+                <Flex justifyContent="space-evenly">
                 <FaPencil color='#2B6CB0' fontSize={18} onClick={() => handleEdit(ingredient)}/>
                 <MdDelete color= '#CF070A'fontSize={18} onClick={() => confirmDelete(ingredient.id)}/>
                 </Flex>
