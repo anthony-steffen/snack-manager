@@ -14,15 +14,15 @@ datasource db {
 }
 
 model User {
-  id         Int      @id @default(autoincrement())
-  name       String
-  email      String   @unique
-  password   String
-  role       Role     @default(USER) // agora usando enum
-  refreshToken   String?  // Token de atualização opcional
-  refreshTokenExpiresAt  DateTime? // opcional
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+  id                    Int       @id @default(autoincrement())
+  name                  String
+  email                 String    @unique
+  password              String
+  role                  Role      @default(USER) // agora usando enum
+  refreshToken          String? // Token de atualização opcional
+  refreshTokenExpiresAt DateTime? // opcional
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
 }
 
 enum Role {
@@ -30,21 +30,21 @@ enum Role {
   ADMIN
 }
 
-  model Product {
-  id          Int       @id @default(autoincrement())
-  code        String       @unique
+model Product {
+  id          Int      @id @default(autoincrement())
+  code        String   @unique
   name        String
   description String?
   price       Float
   imgUrl      String?
   stock       Int
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 
-  categoryId  Int
-  category    Category  @relation(fields: [categoryId], references: [id])
+  categoryId Int
+  category   Category @relation(fields: [categoryId], references: [id])
 
-  recipe      Recipe?
+  recipe Recipe?
 }
 
 model Category {
@@ -52,31 +52,41 @@ model Category {
   name     String    @unique
   type     String
   products Product[]
+  recipes  Recipe[]
 }
 
 model Ingredient {
-  id       Int      @id @default(autoincrement())
-  name     String   @unique
+  id        Int          @id @default(autoincrement())
+  name      String       @unique
   unitPrice Float
-  items    RecipeItem[]
+  items     RecipeItem[]
 }
 
 model Recipe {
-  id         Int         @id @default(autoincrement())
-  productId  Int         @unique    // ✅ Torna o relacionamento 1:1 válido
-  product    Product     @relation(fields: [productId], references: [id])
-  items      RecipeItem[]
-  createdAt  DateTime    @default(now())
+  id              Int      @id @default(autoincrement())
+  productId       Int      @unique
+  product         Product  @relation(fields: [productId], references: [id])
+  categoryId     Int?  
+  category        Category? @relation(fields: [categoryId], references: [id])
+  validity        String?
+  yield           Float?
+  wastePercentage Float?    @default(0)
+  markup          Float?   @default(1)
+  costTotal       Float?    @default(0)
+  costWithWaste   Float?    @default(0)
+  suggestedPrice  Float?    @default(0)
+
+  items     RecipeItem[]
+  createdAt DateTime     @default(now())
 }
 
-
 model RecipeItem {
-  id          Int        @id @default(autoincrement())
-  recipeId    Int
+  id           Int        @id @default(autoincrement())
+  recipeId     Int
   ingredientId Int
-  quantity    Float
-  recipe      Recipe     @relation(fields: [recipeId], references: [id])
-  ingredient  Ingredient @relation(fields: [ingredientId], references: [id])
+  quantity     Float
+  recipe       Recipe     @relation(fields: [recipeId], references: [id])
+  ingredient   Ingredient @relation(fields: [ingredientId], references: [id])
 
   @@unique([ingredientId, recipeId]) // Garante que o mesmo ingrediente não possa ser adicionado mais de uma vez na mesma receita
 }

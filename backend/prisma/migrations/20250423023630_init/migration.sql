@@ -55,6 +55,14 @@ CREATE TABLE `Ingredient` (
 CREATE TABLE `Recipe` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `productId` INTEGER NOT NULL,
+    `categoryId` INTEGER NOT NULL,
+    `validity` VARCHAR(191) NOT NULL,
+    `yield` DOUBLE NOT NULL,
+    `wastePercentage` DOUBLE NOT NULL DEFAULT 0,
+    `markup` DOUBLE NOT NULL DEFAULT 1,
+    `costTotal` DOUBLE NOT NULL DEFAULT 0,
+    `costWithWaste` DOUBLE NOT NULL DEFAULT 0,
+    `suggestedPrice` DOUBLE NOT NULL DEFAULT 0,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
 
     UNIQUE INDEX `Recipe_productId_key`(`productId`),
@@ -77,6 +85,9 @@ ALTER TABLE `Product` ADD CONSTRAINT `Product_categoryId_fkey` FOREIGN KEY (`cat
 
 -- AddForeignKey
 ALTER TABLE `Recipe` ADD CONSTRAINT `Recipe_productId_fkey` FOREIGN KEY (`productId`) REFERENCES `Product`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Recipe` ADD CONSTRAINT `Recipe_categoryId_fkey` FOREIGN KEY (`categoryId`) REFERENCES `Category`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `RecipeItem` ADD CONSTRAINT `RecipeItem_recipeId_fkey` FOREIGN KEY (`recipeId`) REFERENCES `Recipe`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;

@@ -20,6 +20,7 @@ import { useProducts } from "../../hooks/useProducts";
 import { useCategories } from "../../hooks/useCategories";
 import { MdDelete } from "react-icons/md";
 import { FaPencil } from "react-icons/fa6";
+import {formatCurrencyBRL} from '../../utils/formatCurrency'
 
 export default function ProductsPage() {
   const {
@@ -164,7 +165,7 @@ export default function ProductsPage() {
                 <Td>{product.code}</Td>
                 <Td>{product.name}</Td>
                 <Td>{product.category?.name}</Td>
-                <Td>${product.price.toFixed(2)}</Td>
+                <Td>{formatCurrencyBRL(product.price)}</Td>
                 <Td>{product.stock}</Td>
                 <Td>
                    <Flex justifyContent="space-evenly">

@@ -34,6 +34,9 @@ export class RecipeService {
     return this.prisma.recipe.create({
       data: {
         productId: dto.productId,
+        categoryId: dto.categoryId,
+        validity: dto.validity,
+        yield: dto.yield,
         items: {
           create: dto.items.map((item) => ({
             ingredientId: item.ingredientId,

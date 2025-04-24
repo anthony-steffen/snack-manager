@@ -26,6 +26,7 @@ import { useRef, useState } from "react";
 import { useIngredients } from "../hooks/useIngredients";
 import { MdDelete } from "react-icons/md";
 import { FaPencil } from "react-icons/fa6";
+import { formatCurrencyBRL } from "../utils/formatCurrency";
 
 export default function IngredientsPage() {
   const {
@@ -115,7 +116,7 @@ export default function IngredientsPage() {
             <Tr key={ingredient.id}>
               <Td>{ingredient.id}</Td>
               <Td>{ingredient.name}</Td>
-              <Td>${ingredient.unitPrice.toFixed(2)}</Td>
+              <Td>{formatCurrencyBRL(ingredient.unitPrice)}</Td>
               <Td>
                 <Flex justifyContent="space-evenly">
                 <FaPencil color='#2B6CB0' fontSize={18} onClick={() => handleEdit(ingredient)}/>
