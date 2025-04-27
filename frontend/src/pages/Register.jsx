@@ -73,13 +73,13 @@ export default function Register() {
 			display="flex"
 			justifyContent="center"
 			alignItems="flex-start"
-			marginTop="10%"
+			marginTop="15%"
 			h="100vh"
 			css={css`
 				animation: ${fadeInUp} 0.6s ease forwards;
 			`}>
 			<Box
-			  border={'1px solid #ccc'}
+			  border={'1px solid rgb(24, 24, 24)'}
 				p={12}
 				rounded="2xl"
 				boxShadow="2xl"

@@ -60,7 +60,7 @@ export default function Login() {
       display="flex"
       justifyContent="center"
       alignItems="flex-start"
-      marginTop="10%"
+      marginTop="15%"
       h="100vh"
       css={css`
         animation: ${fadeInUp} 0.6s ease forwards;
@@ -71,6 +71,7 @@ export default function Login() {
         rounded="2xl"
         boxShadow="2xl"
         width={{ base: '90%', sm: '80%', md: '60%', lg: '40%' }}
+        border={'1px solid rgb(24, 24, 24)'}
         maxWidth="400px"
       >
         <form onSubmit={handleSubmit(onSubmit)}>
