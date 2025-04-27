@@ -7,7 +7,10 @@ const initialFormData = {
   validity: "",
   yield: "",
   description: "",
+  wastePercentage: "",
+  markupPercentage: "",
 };
+
 
 export const useRecipes = () => {
   const toast = useToast();
@@ -17,6 +20,20 @@ export const useRecipes = () => {
   const [ingredients, setIngredients] = useState([]);
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
+  const [totalCost, setTotalCost] = useState(0);
+
+  // Atualiza o total toda vez que um ingrediente é adicionado ou removido
+  useEffect(() => {
+    const calculateTotal = () => {
+      const total = items.reduce((acc, item) => {
+        const ingredient = ingredients.find(i => i.id === Number(item.ingredientId));
+        if (!ingredient) return acc;
+        return acc + ingredient.unitPrice * parseFloat(item.quantity || 0);
+      }, 0);
+      setTotalCost(total);
+    };
+    calculateTotal();
+  }, [items, ingredients]);
 
   // Formulário
   const handleInputChange = (e) => {
@@ -55,6 +72,8 @@ export const useRecipes = () => {
           productId: Number(formData.productId),
           categoryId: Number(formData.categoryId),
           validity: formData.validity,
+          wastePercentage: Number(formData.wastePercentage),
+          markupPercentage: Number(formData.markupPercentage),
           yield: Number(formData.yield),
           description: formData.description,
           items: items.map((item) => ({
@@ -115,5 +134,6 @@ export const useRecipes = () => {
     products,
     categories,
     ingredients,
+    totalCost,
   };
 };
