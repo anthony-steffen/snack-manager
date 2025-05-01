@@ -47,9 +47,9 @@ export default function Home() {
         spacing={3} 
         mx="auto"
         w={{ base: "100%", md: "80%", lg: "40%" }}
-        border={"1px solid "} 
+        border={"1px solid rgb(54, 54, 54)"}
         borderRadius="lg" 
-        bg="whiteAlpha.800"
+        // bg="whiteAlpha.800"
         >
           <Card
             icon={FaBoxOpen}
@@ -68,7 +68,7 @@ export default function Home() {
           />
           <Card
             icon={FaListAlt}
-            label="Receitas Cadastradas"
+            label="Receitas"
             onClick={() => navigate("/recipes")}
           />
         </SimpleGrid>
