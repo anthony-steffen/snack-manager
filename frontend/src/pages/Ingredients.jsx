@@ -63,7 +63,7 @@ export default function IngredientsPage() {
     w={{ base: "95%", md: "40%", lg: "20%" }}
     borderRadius="lg"
     boxShadow="md"
-    h={'100vh'}
+    h={'100%'}
     >
       <Heading mb={6} textAlign="center" fontSize={24}>
         Manage Ingredients
