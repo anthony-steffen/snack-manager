@@ -26,22 +26,28 @@ export class ProductsController {
     return this.productsService.findAll();
   }
 
+  @Get('name/:name')
+  findByName(@Param('name') name: string) {
+    return this.productsService.findByName(name);
+  }
+
+  @Get('low-stock')
+  findByLowStock() {
+    return this.productsService.findByLowStock();
+  }
+
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  findOne(@Param('id') id: number) {
     return this.productsService.findOne(id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() dto: UpdateProductDto) {
+  update(@Param('id') id: number, @Body() dto: UpdateProductDto) {
     return this.productsService.update(id, dto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  remove(@Param('id') id: number) {
     return this.productsService.remove(Number(id));
-  }
-  @Get('name/:name')
-  findByName(@Param('name') name: string) {
-    return this.productsService.findByName(name);
   }
 }

@@ -51,17 +51,29 @@ export class ProductsService {
     });
   }
 
-  async findOne(id: string) {
+  async findOne(id: number) {
+    // const parsedId = Number(id);
+    console.log('ID:', id);
+
+    if (isNaN(id) || id <= 0) {
+      throw new NotFoundException(`Invalid product ID: ${id}`);
+    }
+
     const product = await this.prisma.product.findUnique({
       where: { id: Number(id) },
+      include: {
+        category: true,
+      },
     });
+
     if (!product) {
       throw new NotFoundException(`Product with ID ${id} not found`);
     }
+
     return product;
   }
 
-  async update(id: string, dto: UpdateProductDto) {
+  async update(id: number, dto: UpdateProductDto) {
     const product = await this.prisma.product.findUnique({
       where: { id: Number(id) },
     });
@@ -77,9 +89,11 @@ export class ProductsService {
         price: dto.price,
         imgUrl: dto.imgUrl,
         stock: dto.stock,
-        category: {
-          connect: { id: dto.categoryId },
-        },
+        ...(dto.categoryId && {
+          category: {
+            connect: { id: dto.categoryId },
+          },
+        }),
       },
       include: {
         category: true,
@@ -105,5 +119,19 @@ export class ProductsService {
       throw new NotFoundException(`Product with name ${name} not found`);
     }
     return product;
+  }
+
+  async findByLowStock() {
+    // Retorna produtos com estoque baixo (menor ou igual a 10)
+    return this.prisma.product.findMany({
+      where: {
+        stock: {
+          lte: 10,
+        },
+      },
+      include: {
+        category: true,
+      },
+    });
   }
 }
