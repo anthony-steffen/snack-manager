@@ -27,20 +27,20 @@ export class IngredientController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  findOne(@Param('id') id: number) {
     return this.ingredientService.findOne(+id);
   }
 
   @Patch(':id')
   update(
-    @Param('id') id: string,
+    @Param('id') id: number,
     @Body() updateIngredientDto: UpdateIngredientDto,
   ) {
     return this.ingredientService.update(+id, updateIngredientDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  remove(@Param('id') id: number) {
     return this.ingredientService.remove(+id);
   }
 }
