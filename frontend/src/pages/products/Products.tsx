@@ -21,8 +21,10 @@ import { useCategories } from "../../hooks/useCategories";
 import { MdDelete } from "react-icons/md";
 import { FaPencil } from "react-icons/fa6";
 import {formatCurrencyBRL} from '../../utils/formatCurrency'
+import {Product, Category} from '../../types'
+import { ReactElement } from "react";
 
-export default function ProductsPage() {
+const ProductsPage = (): ReactElement => {
   const {
     products,
     formData,
@@ -34,7 +36,7 @@ export default function ProductsPage() {
     handleDeleteProduct,
   } = useProducts();
 
-  const { categories } = useCategories();
+  const { categories }: { categories: Category[] } = useCategories();
 
   return (
     <Box
@@ -181,3 +183,5 @@ export default function ProductsPage() {
     </Box>
   );
 }
+
+export default ProductsPage;

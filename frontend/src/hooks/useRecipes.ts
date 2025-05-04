@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useToast } from "@chakra-ui/react";
+import {Category, Ingredient, Product, RecipeFormData, RecipeItem} from '../types'
 
 const initialFormData = {
   productId: "",
@@ -15,12 +16,12 @@ const initialFormData = {
 export const useRecipes = () => {
   const toast = useToast();
 
-  const [formData, setFormData] = useState(initialFormData);
-  const [items, setItems] = useState([]);
-  const [ingredients, setIngredients] = useState([]);
-  const [products, setProducts] = useState([]);
-  const [categories, setCategories] = useState([]);
-  const [totalCost, setTotalCost] = useState(0);
+  const [formData, setFormData] = useState<RecipeFormData>(initialFormData);
+  const [items, setItems] = useState<RecipeItem[]>([]);
+  const [ingredients, setIngredients] = useState<Ingredient[]>([]);
+  const [products, setProducts] = useState<Product[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [totalCost, setTotalCost] = useState<number>(0);
 
   // Atualiza o total toda vez que um ingrediente é adicionado ou removido
   useEffect(() => {
@@ -28,7 +29,7 @@ export const useRecipes = () => {
       const total = items.reduce((acc, item) => {
         const ingredient = ingredients.find(i => i.id === Number(item.ingredientId));
         if (!ingredient) return acc;
-        return acc + ingredient.unitPrice * parseFloat(item.quantity || 0);
+        return acc + ingredient.unitPrice * item.quantity || 0;
       }, 0);
       setTotalCost(total);
     };
@@ -36,22 +37,22 @@ export const useRecipes = () => {
   }, [items, ingredients]);
 
   // Formulário
-  const handleInputChange = (e) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleAddItem = () => {
-    setItems((prev) => [...prev, { ingredientId: "", quantity: "", unit: "" }]);
+    setItems((prev) => [...prev, { ingredientId: "", quantity: 0, unit: "" }]);
   };
 
-  const handleItemChange = (index, field, value) => {
+  const handleItemChange = (index: number, field: string, value: string | number) => {
     const updated = [...items];
     updated[index][field] = value;
     setItems(updated);
   };
 
-  const handleRemoveItem = (index) => {
+  const handleRemoveItem = (index: number) => {
     const updated = items.filter((_, i) => i !== index);
     setItems(updated);
   };

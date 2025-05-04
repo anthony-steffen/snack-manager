@@ -22,7 +22,7 @@ import { useRecipes } from "../hooks/useRecipes";
 
 const unitOptions = ["UN", "ML", "L", "G", "KG"];
 
-export default function RegisterRecipesPage() {
+const RegisterRecipesPage = (): React.ReactElement => {
 	const {
 		formData,
 		handleInputChange,
@@ -240,3 +240,6 @@ export default function RegisterRecipesPage() {
 		</Box>
 	);
 }
+
+
+export default RegisterRecipesPage;

@@ -2,11 +2,13 @@
 import { useEffect, useState } from "react";
 import { useToast } from "@chakra-ui/react";
 
+import { Product, ProductFormData } from "../types/Product";
+
 export function useProducts() {
   const toast = useToast();
 
-  const [products, setProducts] = useState([]);
-  const [formData, setFormData] = useState(() => {
+  const [products, setProducts] = useState<Product[]>([]);
+  const [formData, setFormData] = useState<ProductFormData>(() => {
     const stored = localStorage.getItem("productFormData");
     return stored
       ? JSON.parse(stored)
@@ -21,7 +23,7 @@ export function useProducts() {
         };
   });
 
-  const [isEditing, setIsEditing] = useState(() => {
+  const [isEditing, setIsEditing] = useState<boolean>(() => {
     return localStorage.getItem("productIsEditing") === "true";
   });
 
@@ -36,7 +38,7 @@ export function useProducts() {
 
   useEffect(() => {
     localStorage.setItem("productFormData", JSON.stringify(formData));
-    localStorage.setItem("productIsEditing", isEditing);
+    localStorage.setItem("productIsEditing", isEditing.toString());
     if (editingId) {
       localStorage.setItem("productEditingId", editingId.toString());
     } else {
@@ -59,7 +61,7 @@ export function useProducts() {
     }
   };
 
-  const handleInputChange = (e) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };

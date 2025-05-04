@@ -9,30 +9,40 @@ import {
 	useToast,
 } from "@chakra-ui/react";
 import { css, keyframes } from "@emotion/react";
+import React, { ReactElement } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 
 const fadeInUp = keyframes`
   from {
     transform: translateY(30px);
+    opacity: 0;
   } 
   to {
     transform: translateY(0);
+    opacity: 1;
   }
 `;
 
-export default function Register() {
+type RegisterFormInputs = {
+	name: string;
+	email: string;
+	password: string;
+	confirmPassword: string;
+};
+
+const Register = (): ReactElement => {
 	const {
 		register,
 		handleSubmit,
 		watch,
 		formState: { errors },
-	} = useForm();
+	} = useForm<RegisterFormInputs>();
 
 	const toast = useToast();
 	const navigate = useNavigate();
 
-	const onSubmit = async (data) => {
+	const onSubmit = async (data: RegisterFormInputs) => {
 		try {
 			const response = await fetch("http://localhost:4000/auth/register", {
 				method: "POST",
@@ -49,18 +59,21 @@ export default function Register() {
 				});
 				navigate("/login");
 			} else {
+				const resData = await response.json();
 				toast({
 					title: "Erro ao registrar",
-					description: "Verifique os dados e tente novamente.",
+					description: resData?.message || "Verifique os dados e tente novamente.",
 					status: "error",
 					duration: 3000,
 					isClosable: true,
 				});
 			}
-		} catch (error) {
+		} catch (error: string | any) {
+			const message =
+				error instanceof Error ? error.message : "Erro desconhecido";
 			toast({
 				title: "Erro no servidor",
-				description: error.message,
+				description: message,
 				status: "error",
 				duration: 3000,
 				isClosable: true,
@@ -73,24 +86,25 @@ export default function Register() {
 			display="flex"
 			justifyContent="center"
 			alignItems="flex-start"
-			marginTop="15%"
+			mt="15%"
 			h="100vh"
 			css={css`
 				animation: ${fadeInUp} 0.6s ease forwards;
 			`}>
 			<Box
-			  border={'1px solid rgb(24, 24, 24)'}
+				border="1px solid rgb(24, 24, 24)"
 				p={12}
 				rounded="2xl"
 				boxShadow="2xl"
 				width={{ base: "90%", sm: "80%", md: "60%", lg: "40%" }}
-				maxWidth="400px">
+				maxW="400px">
 				<Heading textAlign="center" fontWeight="bold" fontSize="2xl" mb={4}>
 					Criar conta
 				</Heading>
 
 				<form onSubmit={handleSubmit(onSubmit)}>
 					<Stack spacing={4}>
+						{/* Nome */}
 						<Box>
 							<Input
 								placeholder="Nome"
@@ -105,6 +119,7 @@ export default function Register() {
 							)}
 						</Box>
 
+						{/* Email */}
 						<Box>
 							<Input
 								type="email"
@@ -126,6 +141,7 @@ export default function Register() {
 							)}
 						</Box>
 
+						{/* Senha */}
 						<Box>
 							<Input
 								type="password"
@@ -137,9 +153,8 @@ export default function Register() {
 										message: "A senha deve ter no mínimo 6 caracteres",
 									},
 								})}
+								autoComplete="new-password"
 								borderColor="gray.400"
-								autoComplete="new-pas
-                sword"
 							/>
 							{errors.password && (
 								<Text color="red.500" fontSize="sm" mt={2}>
@@ -148,6 +163,7 @@ export default function Register() {
 							)}
 						</Box>
 
+						{/* Confirmação */}
 						<Box>
 							<Input
 								type="password"
@@ -157,9 +173,8 @@ export default function Register() {
 									validate: (value) =>
 										value === watch("password") || "As senhas não coincidem",
 								})}
+								autoComplete="new-password"
 								borderColor="gray.400"
-								autoComplete="new-pas
-                sword"
 							/>
 							{errors.confirmPassword && (
 								<Text color="red.500" fontSize="sm" mt={2}>
@@ -168,7 +183,7 @@ export default function Register() {
 							)}
 						</Box>
 
-						<Button type="submit">
+						<Button type="submit" colorScheme="blue">
 							Registrar
 						</Button>
 					</Stack>
@@ -177,3 +192,5 @@ export default function Register() {
 		</Box>
 	);
 }
+
+export default Register;
