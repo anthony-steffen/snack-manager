@@ -1,18 +1,34 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useToast } from "@chakra-ui/react";
+import { Recipe } from "../types/Recipe";
+// export interface RecipeItem {
+//   ingredient: Ingredient;
+//   quantity: number;
+// }
+
+// export interface Recipe {
+//   id: number;
+//   product: { name: string };
+//   category?: Category;
+//   validity: string;
+//   yield: string;
+//   wastePercentage?: number;
+//   markupPercentage?: number;
+//   items: RecipeItem[];
+// }
 
 export function useRecipeList() {
   const toast = useToast();
 
-  const [recipes, setRecipes] = useState([]);
-  const [filteredRecipes, setFilteredRecipes] = useState([]);
-  const [selectedRecipe, setSelectedRecipe] = useState(null);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [categoryFilter, setCategoryFilter] = useState("");
-  const [validityFilter, setValidityFilter] = useState("");
-  const [sortDirection, setSortDirection] = useState("asc"); // asc | desc
-  const [currentPage, setCurrentPage] = useState(1);
-  const [recipesPerPage] = useState(6);
+  const [recipes, setRecipes] = useState<Recipe[]>([]);
+  const [filteredRecipes, setFilteredRecipes] = useState<Recipe[]>([]);
+  const [selectedRecipe, setSelectedRecipe] = useState<Recipe | null>(null);
+  const [searchTerm, setSearchTerm] = useState<string>("");
+  const [categoryFilter, setCategoryFilter] = useState<string>("");
+  const [validityFilter, setValidityFilter] = useState<string>("");
+  const [sortDirection, setSortDirection] = useState<string>("asc");
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [recipesPerPage] = useState<number>(6);
 
   const fetchRecipes = async () => {
     try {
@@ -22,10 +38,10 @@ export function useRecipeList() {
         },
       });
       if (!res.ok) throw new Error("Erro ao carregar receitas");
-      const data = await res.json();
+      const data: Recipe[] = await res.json();
       setRecipes(data);
       setFilteredRecipes(data);
-    } catch (err) {
+    } catch (err: any) {
       toast({ title: "Erro", description: err.message, status: "error" });
     }
   };
@@ -37,19 +53,16 @@ export function useRecipeList() {
   useEffect(() => {
     let result = [...recipes];
 
-    // Filtro de busca por nome
     if (searchTerm) {
       result = result.filter((r) =>
         r.product?.name.toLowerCase().includes(searchTerm.toLowerCase())
       );
     }
 
-    // Filtro de categoria
     if (categoryFilter) {
       result = result.filter((r) => r.category?.name === categoryFilter);
     }
 
-    // Filtro de validade
     if (validityFilter) {
       result = result.filter((r) => {
         const validityDays = parseInt(r.validity) || 0;
@@ -57,7 +70,6 @@ export function useRecipeList() {
       });
     }
 
-    // Ordenação por preço sugerido
     result.sort((a, b) => {
       const priceA = calculateSuggestedPrice(a);
       const priceB = calculateSuggestedPrice(b);
@@ -65,19 +77,18 @@ export function useRecipeList() {
     });
 
     setFilteredRecipes(result);
-    setCurrentPage(1); // volta para página 1
+    setCurrentPage(1);
   }, [recipes, searchTerm, categoryFilter, validityFilter, sortDirection]);
 
-  const openRecipeDetails = (recipe) => setSelectedRecipe(recipe);
+  const openRecipeDetails = (recipe: Recipe) => setSelectedRecipe(recipe);
   const closeRecipeDetails = () => setSelectedRecipe(null);
 
   const indexOfLastRecipe = currentPage * recipesPerPage;
   const indexOfFirstRecipe = indexOfLastRecipe - recipesPerPage;
   const currentRecipes = filteredRecipes.slice(indexOfFirstRecipe, indexOfLastRecipe);
-
   const totalPages = Math.ceil(filteredRecipes.length / recipesPerPage);
 
-  const goToPage = (page) => setCurrentPage(page);
+  const goToPage = (page: number) => setCurrentPage(page);
 
   return {
     recipes: currentRecipes,
@@ -96,12 +107,11 @@ export function useRecipeList() {
     totalPages,
     goToPage,
     fetchRecipes,
-    allRecipes: recipes, // para listar categorias
+    allRecipes: recipes,
   };
 }
 
-// Função para calcular preço sugerido
-function calculateSuggestedPrice(recipe) {
+function calculateSuggestedPrice(recipe: Recipe): number {
   const totalIngredientCost = recipe.items.reduce((acc, item) => {
     return acc + item.ingredient.unitPrice * item.quantity;
   }, 0);

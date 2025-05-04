@@ -1,18 +1,38 @@
 import { useEffect, useState } from "react";
 import { useToast } from "@chakra-ui/react";
 
+export interface Ingredient {
+  id: number;
+  name: string;
+  unitPrice: number;
+}
+export interface IngredientFormData {
+  name: string;
+  unitPrice: string;
+}
+export interface UseIngredientsReturn {
+  ingredients: Ingredient[];
+  formData: IngredientFormData;
+  isEditing: boolean;
+  handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  handleAddIngredient: () => void;
+  handleEdit: (ingredient: Ingredient) => void;
+  handleUpdateIngredient: () => void;
+  handleDelete: (id: number) => void;
+}
+
 export function useIngredients() {
-  const [ingredients, setIngredients] = useState([]);
-  const [formData, setFormData] = useState(() => {
+  const [ingredients, setIngredients] = useState<Ingredient[]>([]);
+  const [formData, setFormData] = useState<IngredientFormData>(() => {
     const stored = localStorage.getItem("ingredientFormData");
     return stored ? JSON.parse(stored) : { name: "", unitPrice: "" };
   });
 
-  const [isEditing, setIsEditing] = useState(() => {
+  const [isEditing, setIsEditing] = useState<boolean>(() => {
     return localStorage.getItem("ingredientIsEditing") === "true";
   });
 
-  const [editingId, setEditingId] = useState(() => {
+  const [editingId, setEditingId] = useState<number | null>(() => {
     const id = localStorage.getItem("ingredientEditingId");
     return id ? Number(id) : null;
   });
@@ -55,7 +75,7 @@ export function useIngredients() {
     }
   };
 
-  const handleInputChange = (e) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };

@@ -1,7 +1,6 @@
 // src/hooks/useProducts.js
 import { useEffect, useState } from "react";
 import { useToast } from "@chakra-ui/react";
-
 import { Product, ProductFormData } from "../types/Product";
 
 export function useProducts() {

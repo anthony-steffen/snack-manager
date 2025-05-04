@@ -19,42 +19,6 @@ import { RecipeDetailsModal } from "../components/RecipeDetailsModal";
 import { FiEye } from "react-icons/fi";
 import { ReactElement } from "react";
 
-// ✅ Interfaces usadas
-interface Category {
-  name: string;
-}
-
-interface Product {
-  name: string;
-}
-
-interface Recipe {
-  id: string;
-  product?: Product;
-  category?: Category;
-  validity: number;
-  yield: string;
-}
-
-interface UseRecipeListResult {
-  recipes: Recipe[];
-  allRecipes: Recipe[];
-  selectedRecipe: Recipe | null;
-  openRecipeDetails: (recipe: Recipe) => void;
-  closeRecipeDetails: () => void;
-  searchTerm: string;
-  setSearchTerm: (term: string) => void;
-  currentPage: number;
-  totalPages: number;
-  goToPage: (page: number) => void;
-  categoryFilter: string;
-  setCategoryFilter: (value: string) => void;
-  validityFilter: string;
-  setValidityFilter: (value: string) => void;
-  sortDirection: string;
-  setSortDirection: (value: string) => void;
-}
-
 const RecipesPage = (): ReactElement => {
   const {
     recipes,
@@ -73,7 +37,7 @@ const RecipesPage = (): ReactElement => {
     setValidityFilter,
     sortDirection,
     setSortDirection,
-  }: UseRecipeListResult = useRecipeList();
+  } = useRecipeList();
 
 	return (
 		<Box

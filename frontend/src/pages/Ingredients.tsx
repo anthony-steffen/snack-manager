@@ -27,32 +27,33 @@ import { useIngredients } from "../hooks/useIngredients";
 import { MdDelete } from "react-icons/md";
 import { FaPencil } from "react-icons/fa6";
 import { formatCurrencyBRL } from "../utils/formatCurrency";
+import { Ingredient } from "../types";
 
 // 1. Definimos as interfaces de dados
-interface Ingredient {
-  id: number;
-  name: string;
-  unitPrice: number;
-}
+// interface Ingredient {
+//   id: number;
+//   name: string;
+//   unitPrice: number;
+// }
 
-interface IngredientForm {
-  name: string;
-  unitPrice: number;
-}
+// interface IngredientForm {
+//   name: string;
+//   unitPrice: number;
+// }
 
-// 2. Se quisermos, podemos tipar o retorno do hook (opcional)
-interface UseIngredientsReturn {
-  ingredients: Ingredient[];
-  formData: IngredientForm;
-  isEditing: boolean;
-  handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  handleAddIngredient: () => void;
-  handleEdit: (ing: Ingredient) => void;
-  handleUpdateIngredient: () => void;
-  handleDelete: (id: number) => void;
-}
+// // 2. Se quisermos, podemos tipar o retorno do hook (opcional)
+// interface UseIngredientsReturn {
+//   ingredients: Ingredient[];
+//   formData: IngredientForm;
+//   isEditing: boolean;
+//   handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+//   handleAddIngredient: () => void;
+//   handleEdit: (ing: Ingredient) => void;
+//   handleUpdateIngredient: () => void;
+//   handleDelete: (id: number) => void;
+// }
 
-const Ingredients: React.FC = (): ReactElement => {
+const IngredientsPage: React.FC = (): ReactElement => {
   // 3. Desconstruímos o hook com tipagem opcional via “as”
   const {
     ingredients,
@@ -63,7 +64,7 @@ const Ingredients: React.FC = (): ReactElement => {
     handleEdit,
     handleUpdateIngredient,
     handleDelete,
-  } = useIngredients() as UseIngredientsReturn;
+  } = useIngredients()
 
   // 4. Estado do ID que vamos deletar, agora tipado
   const [deletingId, setDeletingId] = useState<number | null>(null);
@@ -210,4 +211,4 @@ const Ingredients: React.FC = (): ReactElement => {
   );
 };
 
-export default Ingredients;
+export default IngredientsPage;
