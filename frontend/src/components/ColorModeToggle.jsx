@@ -18,7 +18,7 @@ export default function ColorModeToggle() {
       outline='ghost'
       bg={useColorModeValue('white', '#242424')}
       position="absolute"
-      top="7"
+      top="4"
       right="4"
       size="sm"
       _hover={{

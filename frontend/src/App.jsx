@@ -9,14 +9,14 @@ import RegisterRecipesPage from "./pages/RegisterRecipesPage"
 import RecipesPage from "./pages/RecipesPage"
 import { ProtectedRoute } from "./components/ProtectedRoute"
 import ColorModeToggle from "./components/ColorModeToggle"
-import AuthenticatedLayout from "./components/AuthenticatedLayout"
+import AuthPage from "./pages/AuthPage"
 
 function App() {
   return (
     <Router>
       <ColorModeToggle />
       <Routes>
-        <Route path="/login" element={<Login />} />
+        <Route path="/login" element={<AuthPage />} />
         <Route path="/register" element={<Register />} />
         <Route path="/home" element={<Home />} />
         <Route path="/products" element={ <ProtectedRoute> <Products /> </ProtectedRoute> }/>
