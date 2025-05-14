@@ -42,7 +42,7 @@ export default function AuthPage() {
           left={isSignUp ? '100%' : '30%'}
           w="70%"
           h="100%"
-          p={2}
+          p={1}
           transition="all 0.6s ease"
           zIndex={ isSignUp ? 1 : 3 }
           bg={useColorModeValue('white', 'gray.800')}
@@ -77,12 +77,12 @@ export default function AuthPage() {
           transition="all 0.6s ease"
           display="flex"
           flexDir="column"
-          justifyContent="center"
-          gap={4}
+          // justifyContent="center"
+          // gap={4}
           alignItems="center"
           zIndex={4}
         >
-          <Heading fontSize="lg" textAlign="center">
+          <Heading fontSize="lg" textAlign="center" my={4}>
             {isSignUp ? 'Hello, Friend!' : 'Welcome Back!'}
           </Heading>
           <Text fontSize="sm" mb={6} maxW="80%" textAlign="center">
@@ -109,12 +109,12 @@ function SignInForm() {
   return (
     <Stack spacing={4}>
       <Heading textAlign={'center'}>Sign In</Heading>
-      <Input placeholder="Email" type="email" />
-      <Input placeholder="Password" type="password" />
-      <Button colorScheme="red" rounded="full">
+      <Input placeholder="Email" type="email" size={'sm'} rounded={'md'}/>
+      <Input placeholder="Password" type="password" size={'sm'} rounded={'md'}/>
+      <Button colorScheme="red" rounded="md" w={{base: '50%', md: '50%'}} m={'auto'} mt={'30%'}>
         Sign In
       </Button>
-      <Text fontSize="x-small" textAlign="center">
+      <Text fontSize="small" textAlign="center">
         Forgot your password?
       </Text>
     </Stack>

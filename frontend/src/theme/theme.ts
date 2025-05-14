@@ -1,12 +1,12 @@
-import { extendTheme, ThemeConfig } from '@chakra-ui/react'
+import { border, extendTheme, ThemeConfig } from '@chakra-ui/react'
 
-// ⚙️ Configuração de cor inicial
+// ⚙️ Configuração inicial
 const config: ThemeConfig = {
-  initialColorMode: 'dark', // pode ser 'light' se preferir
+  initialColorMode: 'dark',
   useSystemColorMode: false,
 }
 
-// 🎨 Tema personalizado
+// 🎨 Tema personalizado com botão `glow`
 const theme = extendTheme({
   config,
   fonts: {
@@ -25,7 +25,7 @@ const theme = extendTheme({
       200: '#87ee9d',
       300: '#58e777',
       400: '#2adf51',
-      500: '#10c637', // ✅ cor principal do botão
+      500: '#10c637',
       600: '#08a02c',
       700: '#027a21',
       800: '#005416',
@@ -40,7 +40,7 @@ const theme = extendTheme({
       },
       text: {
         default: 'gray.800',
-        _dark: 'gray.100',   
+        _dark: 'gray.100',
       },
       primary: {
         default: 'brand.500',
@@ -52,7 +52,7 @@ const theme = extendTheme({
     Button: {
       variants: {
         solid: {
-          bg: 'green.500',
+          bg: 'brand.500',
           color: 'white',
           _hover: {
             bg: 'brand.600',
@@ -75,6 +75,107 @@ const theme = extendTheme({
             },
           },
         },
+        glow: {
+          position: 'relative',
+          zIndex: 0,
+          borderRadius: 'lg',
+          px: 6,
+          py: 3,
+          fontWeight: 'bold',
+          bg: '#111',
+          color: 'white',
+          // overflow: 'hidden',
+          transition: 'all 0.3s ease',
+          _before: {
+            content: `''`,
+            position: 'absolute',
+            width: 'calc(100% + 2px)',
+            height: 'calc(100% + 2px)',
+            bgGradient:
+              'linear(45deg, #ff0000, #ff7300, #fffb00, #48ff00, #00ffd5, #002bff, #7a00ff, #ff00c8, #ff0000)',
+            bgSize: '400%',
+            filter: 'blur(3px)',
+            borderRadius: 'lg',
+            zIndex: -1,
+            opacity: 0,
+            transition: 'opacity 0.4s ease-in-out',
+            animation: 'glowing 20s linear infinite',
+          },
+          _after: {
+            content: `''`,
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            bg: '#111',
+            borderRadius: 'lg',
+            zIndex: -1,
+          },
+          _hover: {
+            _before: {
+              opacity: 1,
+            },
+          },
+          _focus: {
+            boxShadow: 'none !important',
+            outline: 'none !important',
+          },
+          _focusVisible: {
+            boxShadow: 'none !important',
+            outline: 'none !important',
+          },
+          _active: {
+            boxShadow: 'none !important',
+            outline: 'none !important',
+            color: '#000',
+          },
+        }
+               
+      },
+    },
+    Input: {
+      variants: {
+        outline: {
+          field: {
+            // cursor: 'pointer',
+           _light: {
+            borderColor: 'blackAlpha.800',
+            _placeholder: {
+              color: 'blackAlpha.800',
+            },
+            _focus: {
+              borderColor: 'orange.400',
+              borderWidth: '2px',
+            },
+            _hover: {
+              borderColor: 'orange.400',
+              borderWidth: '2px',
+            },
+          },
+            _dark: {
+              borderColor: 'gray.400',
+              _placeholder: {
+                color: 'gray.400',
+              },
+              _focus: {
+                borderColor: 'orange.400',
+              },
+              _hover: {
+                borderColor: 'orange.400',
+                borderWidth: '2px',
+              },
+            },
+          },
+        },
+      },
+    },
+    Text: {
+      baseStyle: {
+        color: 'text',
+        _dark: {
+          color: 'whiteAlpha.900',
+        },
       },
     },
   },
@@ -83,6 +184,11 @@ const theme = extendTheme({
       body: {
         bg: 'bg',
         color: 'text',
+      },
+      '@keyframes glowing': {
+        '0%': { backgroundPosition: '0 0' },
+        '50%': { backgroundPosition: '400% 0' },
+        '100%': { backgroundPosition: '0 0' },
       },
     },
   },
