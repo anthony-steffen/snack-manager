@@ -16,18 +16,19 @@ export default function ColorModeToggle() {
       onClick={toggleColorMode}
       color={iconColor}
       outline='ghost'
-      bg={useColorModeValue('white', '#242424')}
+      bgColor='transparent'
+      border='none'
       position="absolute"
       top="4"
       right="4"
       size="sm"
-      _hover={{
-        color: iconColor,
-      }}
+      _focus={{ outline: 'none'}}
+      _hover='none'
+      _active='none'
       transition="color 0.2s ease-in-out"
       fontSize="2xl"
       fontWeight="bold"
-      boxShadow={'none'}
+      boxShadow='none'
     />
   )
 }

@@ -1,4 +1,5 @@
 import { border, extendTheme, ThemeConfig } from '@chakra-ui/react'
+import { color } from 'framer-motion'
 
 // ⚙️ Configuração inicial
 const config: ThemeConfig = {
@@ -84,7 +85,6 @@ const theme = extendTheme({
           fontWeight: 'bold',
           bg: '#111',
           color: 'white',
-          // overflow: 'hidden',
           transition: 'all 0.3s ease',
           _before: {
             content: `''`,
@@ -128,7 +128,7 @@ const theme = extendTheme({
           _active: {
             boxShadow: 'none !important',
             outline: 'none !important',
-            color: '#000',
+            color: 'white',
           },
         }
                
@@ -138,11 +138,10 @@ const theme = extendTheme({
       variants: {
         outline: {
           field: {
-            // cursor: 'pointer',
            _light: {
-            borderColor: 'blackAlpha.800',
+            borderColor: 'blackAlpha.900',
             _placeholder: {
-              color: 'blackAlpha.800',
+              color: 'blackAlpha.900',
             },
             _focus: {
               borderColor: 'orange.400',
@@ -160,6 +159,7 @@ const theme = extendTheme({
               },
               _focus: {
                 borderColor: 'orange.400',
+                borderWidth: '2px',
               },
               _hover: {
                 borderColor: 'orange.400',

@@ -38,7 +38,7 @@ const Login = (): ReactElement => {
 	const navigate = useNavigate();
 	const { login } = useAuth();
 
-	const bg = useColorModeValue("gray.300", "gray.800");
+	const bg = useColorModeValue("gray.200", "gray.800");
 
 	// ✅ 4. useForm tipado com LoginFormData
 	const {
@@ -80,11 +80,11 @@ const Login = (): ReactElement => {
 				animation: ${fadeInUp} 0.6s ease forwards;
 			`}>
 			<Box
-				p={12}
+				p={8}
 				rounded="2xl"
 				boxShadow="2xl"
-				width={{ base: "90%", md: "50%" }}
-				border="2px solid rgb(24, 24, 24)"
+				width={{ base: "95%", md: "50%" }}
+				border="2px solid rgb(0, 0, 0)"
 				maxWidth="400px"
 				bg={bg}>
 				<form onSubmit={handleSubmit(onSubmit)}>
@@ -96,9 +96,10 @@ const Login = (): ReactElement => {
               textAlign="center"
 							fontWeight="extrabold"
               letterSpacing="tight"
-              style={{ WebkitTextStroke: "1px black" }}
+              
+
 							mb={4}>
-							Lanchonete
+							Login
 						</Heading>
 
 						<Input
@@ -112,7 +113,6 @@ const Login = (): ReactElement => {
 								{errors.email.message}
 							</Text>
 						)}
-
 						<Input
 							placeholder="Senha"
 							type="password"
@@ -124,13 +124,7 @@ const Login = (): ReactElement => {
 							</Text>
 						)}
 
-						<Button
-              variant="glow"
-							type="submit"
-							w={{ base: "50%", md: "50%" }}
-							m="auto"
-							// rounded={"lg"}
-              >
+						<Button type="submit" colorScheme="blue" variant={"glow"} mt={4}>
 							Login
 						</Button>
 

@@ -86,7 +86,7 @@ const Home: React.FC = () => {
           spacing={3}
           mx="auto"
           w={{ base: "100%", md: "80%", lg: "40%" }}
-          border="1px solid rgb(54, 54, 54)"
+          border="1px solid black"
           borderRadius="lg"
         >
           <Card

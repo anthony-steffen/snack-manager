@@ -6,6 +6,7 @@ import {
 	Input,
 	Stack,
 	Text,
+	useColorModeValue,
 	useToast,
 } from "@chakra-ui/react";
 import { css, keyframes } from "@emotion/react";
@@ -41,6 +42,7 @@ const Register = (): ReactElement => {
 
 	const toast = useToast();
 	const navigate = useNavigate();
+	const bg = useColorModeValue("gray.200", "gray.800");
 
 	const onSubmit = async (data: RegisterFormInputs) => {
 		try {
@@ -62,7 +64,8 @@ const Register = (): ReactElement => {
 				const resData = await response.json();
 				toast({
 					title: "Erro ao registrar",
-					description: resData?.message || "Verifique os dados e tente novamente.",
+					description:
+						resData?.message || "Verifique os dados e tente novamente.",
 					status: "error",
 					duration: 3000,
 					isClosable: true,
@@ -86,19 +89,29 @@ const Register = (): ReactElement => {
 			display="flex"
 			justifyContent="center"
 			alignItems="flex-start"
-			mt="15%"
+			marginTop={{ base: "15%", md: "5%" }}
 			h="100vh"
 			css={css`
 				animation: ${fadeInUp} 0.6s ease forwards;
 			`}>
 			<Box
-				border="1px solid rgb(24, 24, 24)"
-				p={12}
+				bg={bg}
+				p={8}
 				rounded="2xl"
 				boxShadow="2xl"
-				width={{ base: "90%", sm: "80%", md: "60%", lg: "40%" }}
-				maxW="400px">
-				<Heading textAlign="center" fontWeight="bold" fontSize="2xl" mb={4}>
+				width={{ base: "95%", md: "50%" }}
+				border="2px solid rgb(0, 0, 0)"
+				maxWidth="400px"
+				>
+				<Heading
+					bgGradient="linear(to-r,rgb(202, 40, 40),rgb(202, 186, 40))"
+					bgClip="text"
+					fontSize="3xl"
+					textAlign="center"
+					fontWeight="extrabold"
+					letterSpacing="tight"
+					style={{ WebkitTextStroke: "1px black" }}
+					mb={4}>
 					Criar conta
 				</Heading>
 
@@ -183,7 +196,7 @@ const Register = (): ReactElement => {
 							)}
 						</Box>
 
-						<Button type="submit" colorScheme="blue">
+						<Button type="submit" colorScheme="blue" variant={"glow"} mt={4}>
 							Registrar
 						</Button>
 					</Stack>
@@ -191,6 +204,6 @@ const Register = (): ReactElement => {
 			</Box>
 		</Box>
 	);
-}
+};
 
 export default Register;
