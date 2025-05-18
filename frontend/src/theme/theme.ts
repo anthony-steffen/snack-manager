@@ -170,14 +170,6 @@ const theme = extendTheme({
         },
       },
     },
-    Text: {
-      baseStyle: {
-        color: 'text',
-        _dark: {
-          color: 'whiteAlpha.900',
-        },
-      },
-    },
   },
   styles: {
     global: {

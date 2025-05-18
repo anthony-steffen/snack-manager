@@ -8,6 +8,7 @@ import {
   Text,
   Icon,
   Stack,
+  useColorModeValue,
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import {
@@ -26,15 +27,18 @@ interface CardProps {
 }
 
 const Card: React.FC<CardProps> = ({ icon, label, onClick }) => {
+  const bg = useColorModeValue("gray.900","gray.50");
   return (
     <Box
       as="button"
       onClick={onClick}
-      bg="orange.500"
-      borderRadius="lg"
+      bg="orange.200"
+      border="2px"
+      borderColor={bg}
+      borderRadius="full"
       boxShadow="lg"
       mx={"auto"}
-      p={8}
+      // p={8}
       textAlign="center"
       transition="all 0.3s"
       _hover={{ transform: "scale(1.05)", boxShadow: "2xl" }}
@@ -45,8 +49,8 @@ const Card: React.FC<CardProps> = ({ icon, label, onClick }) => {
       justifyContent="center"
       alignItems="center"
     >
-      <Icon as={icon} boxSize={8} color="teal.500" mb={2} />
-      <Text fontWeight="bold" fontSize={15}>
+      <Icon as={icon} boxSize={8} color="gray.800" mb={2} />
+      <Text fontWeight="bold" fontSize={12} color={"gray.800"}>
         {label}
       </Text>
     </Box>
@@ -55,7 +59,7 @@ const Card: React.FC<CardProps> = ({ icon, label, onClick }) => {
 
 const Home: React.FC = () => {
   const navigate = useNavigate();
-
+  const bg = useColorModeValue("gray.50", "gray.900");
   return (
     <Box
       minH="100vh"
@@ -74,20 +78,23 @@ const Home: React.FC = () => {
         textAlign="center"
       >
         <Stack spacing={4} textAlign="center" mb={10}>
-          <Heading fontSize={{ base: "2xl", md: "4xl" }}>Snack Manager</Heading>
-          <Text fontSize={{ base: "sm", md: "md" }}>
+          <Heading fontSize={{ base: "2xl", md: "4xl" }}fontWeight="extrabold"> Cadastro </Heading>
+          <Text fontSize={{ base: "md", md: "md" }}>
             Gerencie seus produtos, ingredientes e receitas de forma rápida e prática.
           </Text>
         </Stack>
 
         <SimpleGrid
+          bg={bg}
           columns={{ base: 2, md: 4 }}
           p={5}
           spacing={3}
           mx="auto"
           w={{ base: "100%", md: "80%", lg: "40%" }}
-          border="1px solid black"
-          borderRadius="lg"
+          borderWidth={1}
+          borderColor={bg === "gray.50" ? "gray.200" : "gray.800"}
+          borderRadius="3xl"
+          boxShadow={bg === "gray.50" ? "lg" : "dark-lg"}
         >
           <Card
             icon={FaBoxOpen}

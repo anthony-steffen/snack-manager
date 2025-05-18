@@ -96,8 +96,6 @@ const Login = (): ReactElement => {
               textAlign="center"
 							fontWeight="extrabold"
               letterSpacing="tight"
-              
-
 							mb={4}>
 							Login
 						</Heading>
