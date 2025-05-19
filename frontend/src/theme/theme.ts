@@ -229,6 +229,9 @@ const theme = extendTheme({
       button: {
         outline: 'none !important',
         boxShadow: 'none !important',
+        maxWidth: '150px',
+        mx: 'auto',
+        my: '4px',
       },
       '*:focus': {
         outline: 'none !important',
