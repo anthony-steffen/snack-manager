@@ -13,6 +13,13 @@ import {
 	Tr,
 	Text,
 	Select,
+	Stack,
+	useColorModeValue,
+	MenuButton,
+	MenuList,
+	MenuItem,
+	Menu,
+	IconButton,
 } from "@chakra-ui/react";
 import { useRecipeList } from "../hooks/useRecipeList";
 import { RecipeDetailsModal } from "../components/RecipeDetailsModal";
@@ -20,102 +27,115 @@ import { FiEye } from "react-icons/fi";
 import { ReactElement } from "react";
 
 const RecipesPage = (): ReactElement => {
-  const {
-    recipes,
-    allRecipes,
-    selectedRecipe,
-    openRecipeDetails,
-    closeRecipeDetails,
-    searchTerm,
-    setSearchTerm,
-    currentPage,
-    totalPages,
-    goToPage,
-    categoryFilter,
-    setCategoryFilter,
-    validityFilter,
-    setValidityFilter,
-    sortDirection,
-    setSortDirection,
-  } = useRecipeList();
+	const bg = useColorModeValue("gray.50", "gray.900");
+	const {
+		recipes,
+		allRecipes,
+		selectedRecipe,
+		openRecipeDetails,
+		closeRecipeDetails,
+		searchTerm,
+		setSearchTerm,
+		currentPage,
+		totalPages,
+		goToPage,
+		categoryFilter,
+		setCategoryFilter,
+		validityFilter,
+		setValidityFilter,
+		sortDirection,
+		setSortDirection,
+	} = useRecipeList();
 
 	return (
-		<Box
-			border={"1px solid rgb(24, 24, 24)"}
-			mx="auto"
-			my={4}
-			p={6}
-			w={{ base: "95%", md: "90%", lg: "80%" }}
-			borderRadius="lg"
-			boxShadow="md"
-			minH="100vh">
-			<Heading mb={6} textAlign="center" fontSize={{ base: 20, md: 24 }}>
-				Receitas Cadastradas
-			</Heading>
-
+		<Box h="100vh" mx="auto" borderRadius="lg" textAlign="center">
+			<Stack spacing={4} textAlign="center" my={5}>
+				<Heading fontSize={{ base: "2xl", md: "4xl" }} fontWeight="extrabold">
+					{" "}
+					Receitas{" "}
+				</Heading>
+			</Stack>
 			{/* Campo de busca */}
-			<Flex mb={4} gap={2} flexWrap="wrap" justify="center">
-				<Input
-					placeholder="Buscar produto..."
-					value={searchTerm}
-					onChange={(e) => setSearchTerm(e.target.value)}
-					size="sm"
-					maxW="200px"
-				/>
+			<Flex
+			flexWrap="wrap" // permite que quebre a linha em telas pequenas
+			gap={6}
+			justify="center"
+			align="center"
+			p={4}
+			m="auto"
+			mb={4}
+			minH={{ base: "fit-content", md: "60px" }}
+			bg={bg}
+			// borderWidth={1}
+			// borderColor={bg === "gray.50" ? "gray.200" : "gray.800"}
+			// boxShadow={bg === "gray.50" ? "lg" : "dark-lg"}
+				>
+					<Input
+						placeholder="Buscar produto..."
+						value={searchTerm}
+						onChange={(e) => setSearchTerm(e.target.value)}
+						size="sm"
+						maxW="150px"
+					/>
 
-				<Select
-					placeholder="Categoria"
-					value={categoryFilter}
-					onChange={(e) => setCategoryFilter(e.target.value)}
-					size="sm"
-					maxW="150px">
-					{/* Busca categorias únicas */}
-					{[...new Set(allRecipes.map((r) => r.category?.name))]
-						.filter(Boolean)
-						.map((cat) => (
-							<option key={cat} value={cat}>
-								{cat}
-							</option>
-						))}
-				</Select>
+					<Select
+						placeholder="Categoria"
+						value={categoryFilter}
+						onChange={(e) => setCategoryFilter(e.target.value)}
+						size="sm"
+						maxW="150px">
+						{/* Busca categorias únicas */}
+						{[...new Set(allRecipes.map((r) => r.category?.name))]
+							.filter(Boolean)
+							.map((cat) => (
+								<option key={cat} value={cat}>
+									{cat}
+								</option>
+							))}
+					</Select>
 
-				<Select
-					placeholder="Validade até"
-					value={validityFilter}
-					onChange={(e) => setValidityFilter(e.target.value)}
-					size="sm"
-					maxW="130px">
-					<option value="3">3 dias</option>
-					<option value="7">7 dias</option>
-					<option value="30">30 dias</option>
-				</Select>
+					<Select
+						placeholder="Validade até"
+						value={validityFilter}
+						onChange={(e) => setValidityFilter(e.target.value)}
+						size="sm"
+						maxW="150px">
+						<option value="3">3 dias</option>
+						<option value="7">7 dias</option>
+						<option value="30">30 dias</option>
+					</Select>
 
-				<Select
-					placeholder="Ordenar Preço"
-					value={sortDirection}
-					onChange={(e) => setSortDirection(e.target.value)}
-					size="sm"
-					maxW="130px">
-					<option value="asc">Preço ↑</option>
-					<option value="desc">Preço ↓</option>
-				</Select>
+					<Select
+						placeholder="Ordenar Preço"
+						value={sortDirection}
+						onChange={(e) => setSortDirection(e.target.value)}
+						size="sm"
+						maxW="150px">
+						<option value="asc">Preço ↑</option>
+						<option value="desc">Preço ↓</option>
+					</Select>
 			</Flex>
 
 			{/* Tabela */}
-			<Box overflowX="auto" borderRadius="md">
+			<Box
+				overflowX="auto"
+				borderRadius="md"
+				w={{ base: "90%", md: "80%", lg: "40%" }}
+				m="auto"
+				>
 				<Table variant="striped" size="sm" minW="600px">
-					<Thead>
+					<Thead >
 						<Tr>
 							<Th>Prod</Th>
 							<Th>Val</Th>
 							<Th>Rend</Th>
 							<Th>PS</Th>
-							<Th>Ações</Th>
+							<Th>Visualizar</Th>
 						</Tr>
 					</Thead>
 					<Tbody>
 						{recipes.map((recipe) => (
-							<Tr key={recipe.id}>
+							<Tr key={recipe.id} textAlign={"center"}>
 								<Td>{recipe.product?.name || "-"}</Td>
 								<Td>{recipe.category?.name || "-"}</Td>
 								<Td>{recipe.validity}</Td>
@@ -126,7 +146,10 @@ const RecipesPage = (): ReactElement => {
 										onClick={() => openRecipeDetails(recipe)}
 										colorScheme="blue"
 										variant="outline"
-										px={2}>
+										px={2}
+										// _focus={{ outline: 'none'}}
+										>
+										
 										<FiEye fontSize="18px" />
 									</Button>
 								</Td>
@@ -158,6 +181,6 @@ const RecipesPage = (): ReactElement => {
 			)}
 		</Box>
 	);
-}
+};
 
 export default RecipesPage;

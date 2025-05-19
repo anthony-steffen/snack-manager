@@ -32,15 +32,14 @@ const Card: React.FC<CardProps> = ({ icon, label, onClick }) => {
     <Box
       as="button"
       onClick={onClick}
-      bg="orange.200"
+      bg="yellow.400"
       border="2px"
       borderColor={bg}
       borderRadius="full"
       boxShadow="lg"
       mx={"auto"}
-      // p={8}
       textAlign="center"
-      transition="all 0.3s"
+      transition="all 0.1s"
       _hover={{ transform: "scale(1.05)", boxShadow: "2xl" }}
       w="100px"
       h="100px"
@@ -61,20 +60,11 @@ const Home: React.FC = () => {
   const navigate = useNavigate();
   const bg = useColorModeValue("gray.50", "gray.900");
   return (
-    <Box
-      minH="100vh"
-      display="flex"
-      flexDirection="column"
-      alignItems="center"
-      my={3}
-      px={3}
-    >
       <Box
         p={5}
         h="100vh"
         mx="auto"
         borderRadius="lg"
-        w={{ base: "100%" }}
         textAlign="center"
       >
         <Stack spacing={4} textAlign="center" mb={10}>
@@ -86,15 +76,15 @@ const Home: React.FC = () => {
 
         <SimpleGrid
           bg={bg}
+          borderWidth={1}
+          borderColor={bg === "gray.50" ? "gray.200" : "gray.800"}
+          borderRadius="3xl"
+          boxShadow={bg === "gray.50" ? "lg" : "dark-lg"}
           columns={{ base: 2, md: 4 }}
           p={5}
           spacing={3}
           mx="auto"
           w={{ base: "100%", md: "80%", lg: "40%" }}
-          borderWidth={1}
-          borderColor={bg === "gray.50" ? "gray.200" : "gray.800"}
-          borderRadius="3xl"
-          boxShadow={bg === "gray.50" ? "lg" : "dark-lg"}
         >
           <Card
             icon={FaBoxOpen}
@@ -118,7 +108,6 @@ const Home: React.FC = () => {
           />
         </SimpleGrid>
       </Box>
-    </Box>
   );
 };
 

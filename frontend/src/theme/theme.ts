@@ -21,16 +21,66 @@ const theme = extendTheme({
   },
   colors: {
     brand: {
-      50: '#e1fce6',
-      100: '#b5f5c3',
-      200: '#87ee9d',
-      300: '#58e777',
-      400: '#2adf51',
-      500: '#10c637',
-      600: '#08a02c',
-      700: '#027a21',
-      800: '#005416',
-      900: '#002f0a',
+      // //Paleta verde
+      // 50: '#e1fce6',
+      // 100: '#b5f5c3',
+      // 200: '#87ee9d',
+      // 300: '#58e777',
+      // 400: '#2adf51',
+      // 500: '#10c637',
+      // 600: '#08a02c',
+      // 700: '#027a21',
+      // 800: '#005416',
+      // 900: '#002f0a',
+
+      // Paleta azul
+      50: '#e1f4fc',
+      100: '#b5e8fc',
+      200: '#87dcfa',
+      300: '#58d0f8',
+      400: '#2ac4f6',
+      500: '#10b8f4',
+      600: '#08a0e0',
+      700: '#0288cc',
+      800: '#0070b8',
+      900: '#00569c',
+
+      // //Paleta Vermelha
+      // 50: '#fce1e1',
+      // 100: '#fcb5b5',
+      // 200: '#fa8787',
+      // 300: '#f87758',
+      // 400: '#f6512a',
+      // 500: '#f43710',
+      // 600: '#e00808',
+      // 700: '#cc0202',
+      // 800: '#b80202',
+      // 900: '#9c0000',
+
+      // //Paleta Amarela
+      // 50: '#fcfce1',
+      // 100: '#f8fcb5',
+      // 200: '#f4fa87',
+      // 300: '#f0f858',
+      // 400: '#ecf52a',
+      // 500: '#e8f410',
+      // 600: '#d8e008',
+      // 700: '#c0cc02',
+      // 800: '#a8b802',
+      // 900: '#9c9c00',
+      
+      // //Paleta Roxa
+      // 50: '#fce1fc',
+      // 100: '#fcb5f8',
+      // 200: '#fa87fa',
+      // 300: '#f858f8',
+      // 400: '#f52af6',
+      // 500: '#f410f4',
+      // 600: '#e008e0',
+      // 700: '#cc02cc',
+      // 800: '#b802b8',
+      // 900: '#9c009c',
+      
     },
   },
   semanticTokens: {
@@ -45,7 +95,7 @@ const theme = extendTheme({
       },
       primary: {
         default: 'brand.500',
-        _dark: 'brand.400',
+        _dark: 'brand.300',
       },
     },
   },
@@ -53,13 +103,12 @@ const theme = extendTheme({
     Button: {
       variants: {
         solid: {
-          bg: 'brand.500',
+          bg: 'brand.800',
           color: 'white',
+          border: '1px solid black',
+          rounded: 'lg',
           _hover: {
             bg: 'brand.600',
-          },
-          _active: {
-            bg: 'brand.700',
           },
         },
         outline: {
@@ -176,6 +225,18 @@ const theme = extendTheme({
       body: {
         bg: 'bg',
         color: 'text',
+      },
+      button: {
+        outline: 'none !important',
+        boxShadow: 'none !important',
+      },
+      '*:focus': {
+        outline: 'none !important',
+        boxShadow: 'none !important',
+      },
+      '*:focus-visible': {
+        outline: 'none !important',
+        boxShadow: 'none !important',
       },
       '@keyframes glowing': {
         '0%': { backgroundPosition: '0 0' },
