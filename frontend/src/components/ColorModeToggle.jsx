@@ -22,9 +22,9 @@ export default function ColorModeToggle() {
       top="4"
       right="4"
       size="sm"
-      _focus={{ outline: 'none'}}
-      _hover='none'
-      _active='none'
+      // _focus={{ outline: 'none'}}
+      // _hover='none'
+      // _active='none'
       transition="color 0.2s ease-in-out"
       fontSize="2xl"
       fontWeight="bold"
