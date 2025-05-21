@@ -123,14 +123,21 @@ const RecipesPage = (): ReactElement => {
 				w={{ base: "90%", md: "80%", lg: "40%" }}
 				m="auto"
 				>
-				<Table variant="striped" size="sm" minW="600px">
-					<Thead >
+				<Table
+					variant="striped"
+					colorScheme="gray"
+					size="sm"
+					sx={{
+						th: { px: 2, textAlign: "center" },
+						td: { px: 2, textAlign: "center" },
+					}}>
+					<Thead bg="black">
 						<Tr>
-							<Th>Prod</Th>
-							<Th>Val</Th>
-							<Th>Rend</Th>
-							<Th>PS</Th>
-							<Th>Visualizar</Th>
+							<Th color='white'>Prod</Th>
+							<Th color='white'>Val</Th>
+							<Th color='white'>Rend</Th>
+							<Th color='white'>PS</Th>
+							<Th color='white'>ver</Th>
 						</Tr>
 					</Thead>
 					<Tbody>
