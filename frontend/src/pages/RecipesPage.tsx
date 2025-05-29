@@ -15,15 +15,14 @@ import {
 	Select,
 	Stack,
 	useColorModeValue,
-	MenuButton,
-	MenuList,
-	MenuItem,
-	Menu,
 	IconButton,
 } from "@chakra-ui/react";
+import { FilterBtn } from "../components/FilterBtn";
 import { useRecipeList } from "../hooks/useRecipeList";
+import { useRecipes } from "../hooks/useRecipes";
 import { RecipeDetailsModal } from "../components/RecipeDetailsModal";
-import { FiEye } from "react-icons/fi";
+import { FiEye, FiDelete, FiEdit } from "react-icons/fi";
+import { MdDelete, MdEdit } from "react-icons/md";
 import { ReactElement } from "react";
 
 const RecipesPage = (): ReactElement => {
@@ -47,6 +46,8 @@ const RecipesPage = (): ReactElement => {
 		setSortDirection,
 	} = useRecipeList();
 
+	const { handleEditRecipe } = useRecipes();
+
 	return (
 		<Box h="100vh" mx="auto" borderRadius="lg" textAlign="center">
 			<Stack spacing={4} textAlign="center" my={5}>
@@ -57,63 +58,39 @@ const RecipesPage = (): ReactElement => {
 			</Stack>
 			{/* Campo de busca */}
 			<Flex
-			flexWrap="wrap" // permite que quebre a linha em telas pequenas
-			gap={6}
-			justify="center"
-			align="center"
-			p={4}
-			m="auto"
-			mb={4}
-			minH={{ base: "fit-content", md: "60px" }}
-			bg={bg}
-			// borderWidth={1}
-			// borderColor={bg === "gray.50" ? "gray.200" : "gray.800"}
-			// boxShadow={bg === "gray.50" ? "lg" : "dark-lg"}
-				>
-					<Input
-						placeholder="Buscar produto..."
-						value={searchTerm}
-						onChange={(e) => setSearchTerm(e.target.value)}
-						size="sm"
-						maxW="150px"
-					/>
+				w={{ base: "90%", md: "80%", lg: "60%" }}
+				flexWrap="wrap" // permite que quebre a linha em telas pequenas
+				gap={6}
+				justify="center"
+				align="center"
+				p={4}
+				m="auto"
+				mb={4}
+				minH={{ base: "fit-content", md: "60px" }}
+				bg={bg}
+				rounded={"lg"}
+				borderWidth={1}
+				borderColor={bg === "gray.50" ? "gray.200" : "gray.800"}
+				boxShadow={bg === "gray.50" ? "lg" : "dark-lg"}>
+				<Input
+					placeholder="Buscar produto..."
+					value={searchTerm}
+					onChange={(e) => setSearchTerm(e.target.value)}
+					size="sm"
+					maxW="150px"
+				/>
 
-					<Select
-						placeholder="Categoria"
-						value={categoryFilter}
-						onChange={(e) => setCategoryFilter(e.target.value)}
-						size="sm"
-						maxW="150px">
-						{/* Busca categorias únicas */}
-						{[...new Set(allRecipes.map((r) => r.category?.name))]
-							.filter(Boolean)
-							.map((cat) => (
-								<option key={cat} value={cat}>
-									{cat}
-								</option>
-							))}
-					</Select>
-
-					<Select
-						placeholder="Validade até"
-						value={validityFilter}
-						onChange={(e) => setValidityFilter(e.target.value)}
-						size="sm"
-						maxW="150px">
-						<option value="3">3 dias</option>
-						<option value="7">7 dias</option>
-						<option value="30">30 dias</option>
-					</Select>
-
-					<Select
-						placeholder="Ordenar Preço"
-						value={sortDirection}
-						onChange={(e) => setSortDirection(e.target.value)}
-						size="sm"
-						maxW="150px">
-						<option value="asc">Preço ↑</option>
-						<option value="desc">Preço ↓</option>
-					</Select>
+				<FilterBtn
+					categoryFilter={categoryFilter}
+					setCategoryFilter={setCategoryFilter}
+					validityFilter={validityFilter}
+					setValidityFilter={setValidityFilter}
+					sortDirection={sortDirection}
+					setSortDirection={setSortDirection}
+					categories={[
+						...new Set(allRecipes.map((r) => r.category?.name)),
+					].filter(Boolean)}
+				/>
 			</Flex>
 
 			{/* Tabela */}
@@ -121,8 +98,7 @@ const RecipesPage = (): ReactElement => {
 				overflowX="auto"
 				borderRadius="md"
 				w={{ base: "90%", md: "80%", lg: "40%" }}
-				m="auto"
-				>
+				m="auto">
 				<Table
 					variant="striped"
 					colorScheme="gray"
@@ -133,11 +109,11 @@ const RecipesPage = (): ReactElement => {
 					}}>
 					<Thead bg="black">
 						<Tr>
-							<Th color='white'>Prod</Th>
-							<Th color='white'>Val</Th>
-							<Th color='white'>Rend</Th>
-							<Th color='white'>PS</Th>
-							<Th color='white'>ver</Th>
+							<Th color="white">Prod</Th>
+							<Th color="white">Val</Th>
+							<Th color="white">Rend</Th>
+							<Th color="white">PS</Th>
+							<Th color="white">Ações</Th>
 						</Tr>
 					</Thead>
 					<Tbody>
@@ -148,17 +124,34 @@ const RecipesPage = (): ReactElement => {
 								<Td>{recipe.validity}</Td>
 								<Td>{recipe.yield}</Td>
 								<Td>
-									<Button
+									<IconButton
 										size="sm"
 										onClick={() => openRecipeDetails(recipe)}
-										colorScheme="blue"
-										variant="outline"
+										variant="solid"
 										px={2}
-										// _focus={{ outline: 'none'}}
-										>
-										
+										aria-label={"Ver detalhes da receita"}>
 										<FiEye fontSize="18px" />
-									</Button>
+									</IconButton>
+									<IconButton
+										size="sm"
+										icon={<MdDelete />}
+										bg="red.500"
+										color="white"
+										variant="solid"
+										ml={2}
+										onClick={() => console.log("Delete recipe", recipe.id)}
+										aria-label={"Excluir receita"}
+									/>
+									<IconButton
+										size="sm"
+										icon={<MdEdit />}
+										bg="green.700"
+										color="white"
+										variant="solid"
+										ml={2}
+										onClick={() => handleEditRecipe(recipe)}
+										aria-label={"Editar receita"}
+									/>
 								</Td>
 							</Tr>
 						))}

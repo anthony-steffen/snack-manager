@@ -105,7 +105,8 @@ const theme = extendTheme({
         solid: {
           bg: 'brand.800',
           color: 'white',
-          border: '1px solid black',
+          border: '1px solid',
+          borderColor: 'gray.900',
           rounded: 'lg',
           _hover: {
             bg: 'brand.600',

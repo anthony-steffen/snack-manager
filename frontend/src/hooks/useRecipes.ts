@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useToast } from "@chakra-ui/react";
-import {Category, Ingredient, Product, RecipeFormData, RecipeItem} from '../types'
+import {Category, Ingredient, Product, RecipeFormData, RecipeItem, } from '../types'
+import { Recipe } from "../types/Recipe";
 
 const initialFormData = {
   productId: "",
@@ -22,6 +23,13 @@ export const useRecipes = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [totalCost, setTotalCost] = useState<number>(0);
+  const [isEditing, setIsEditing] = useState<boolean>(() => {
+    return localStorage.getItem("recipeIsEditing") === "true";
+  });
+  const [editingId, setEditingId] = useState<number | null>(() => {
+    const id = localStorage.getItem("recipeEditingId");
+    return id ? Number(id) : null;
+  });
 
   // Atualiza o total toda vez que um ingrediente é adicionado ou removido
   useEffect(() => {
@@ -46,11 +54,20 @@ export const useRecipes = () => {
     setItems((prev) => [...prev, { ingredientId: "", quantity: 0, unit: "" }]);
   };
 
-  const handleItemChange = (index: number, field: string, value: string | number) => {
-    const updated = [...items];
-    updated[index][field] = value;
-    setItems(updated);
-  };
+  const handleEditRecipe = (recipe) => {
+  setIsEditing(true);
+  setEditingId(recipe.id);
+  setFormData({
+    productId: recipe.product?.id.toString() || "",
+    categoryId: recipe.category?.id.toString() || "",
+    validity: recipe.validity,
+    yield: recipe.yield.toString(),
+    description: recipe.description || "",
+    wastePercentage: recipe.wastePercentage?.toString() || "",
+    markupPercentage: recipe.markupPercentage?.toString() || "",
+  });
+}
+      
 
   const handleRemoveItem = (index: number) => {
     const updated = items.filter((_, i) => i !== index);
@@ -130,7 +147,7 @@ export const useRecipes = () => {
     handleSubmit,
     items,
     handleAddItem,
-    handleItemChange,
+    handleEditRecipe,
     handleRemoveItem,
     products,
     categories,
