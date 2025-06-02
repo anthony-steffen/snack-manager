@@ -194,11 +194,11 @@ const theme = extendTheme({
               color: 'blackAlpha.900',
             },
             _focus: {
-              borderColor: 'orange.400',
+              borderColor: 'yellow.500',
               borderWidth: '2px',
             },
             _hover: {
-              borderColor: 'orange.400',
+              borderColor: 'yellow.500',
               borderWidth: '2px',
             },
           },
@@ -208,11 +208,11 @@ const theme = extendTheme({
                 color: 'gray.400',
               },
               _focus: {
-                borderColor: 'orange.400',
+                borderColor: 'yellow.500',
                 borderWidth: '2px',
               },
               _hover: {
-                borderColor: 'orange.400',
+                borderColor: 'yellow.500',
                 borderWidth: '2px',
               },
             },
@@ -224,8 +224,14 @@ const theme = extendTheme({
   styles: {
     global: {
       body: {
-        bg: 'bg',
+        _light: {
+          bgGradient: 'linear(115deg, gray.100 55%, gray.50 40%)',
+          color: 'text',
+        },
+        _dark: {
+        bgGradient: 'linear(115deg, gray.900 55%, gray.800 40%)',
         color: 'text',
+        },
       },
       button: {
         outline: 'none !important',

@@ -58,26 +58,24 @@ const RecipesPage = (): ReactElement => {
 			</Stack>
 			{/* Campo de busca */}
 			<Flex
-				w={{ base: "90%", md: "80%", lg: "60%" }}
-				flexWrap="wrap" // permite que quebre a linha em telas pequenas
-				gap={6}
-				justify="center"
-				align="center"
-				p={4}
-				m="auto"
-				mb={4}
-				minH={{ base: "fit-content", md: "60px" }}
+				w={{ base: "95%", md: "80%", lg: "30%" }}
+				mx="auto"
+				flexDir='row'
+				alignItems="center"
+				justifyContent="space-around"
 				bg={bg}
-				rounded={"lg"}
+				rounded={"sm"}
 				borderWidth={1}
 				borderColor={bg === "gray.50" ? "gray.200" : "gray.800"}
-				boxShadow={bg === "gray.50" ? "lg" : "dark-lg"}>
+				boxShadow={bg === "gray.50" ? "lg" : "dark-lg"}
+				>
 				<Input
 					placeholder="Buscar produto..."
 					value={searchTerm}
 					onChange={(e) => setSearchTerm(e.target.value)}
 					size="sm"
 					maxW="150px"
+					my={2}
 				/>
 
 				<FilterBtn
@@ -97,7 +95,7 @@ const RecipesPage = (): ReactElement => {
 			<Box
 				overflowX="auto"
 				borderRadius="md"
-				w={{ base: "90%", md: "80%", lg: "40%" }}
+				w={{ base: "95%", md: "80%", lg: "30%" }}
 				m="auto">
 				<Table
 					variant="striped"

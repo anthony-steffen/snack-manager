@@ -37,9 +37,13 @@ export const FilterBtn = ({
         as={IconButton}
         aria-label="Filtros"
         icon={<GiHamburgerMenu />}
+        m={0}
         variant="outline"
         size="sm"
-      />
+      > 
+      Filtro
+      </MenuButton>
+
       <MenuList
         p={4}
         minW="240px"

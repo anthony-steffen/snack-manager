@@ -37,8 +37,8 @@ const Login = (): ReactElement => {
 	const toast = useToast();
 	const navigate = useNavigate();
 	const { login } = useAuth();
-
-	const bg = useColorModeValue("gray.200", "gray.800");
+	const bg = useColorModeValue("gray.100", "gray.900");
+	// const bg = useColorModeValue("gray.200", "gray.800");
 
 	// ✅ 4. useForm tipado com LoginFormData
 	const {
@@ -81,21 +81,22 @@ const Login = (): ReactElement => {
 			`}>
 			<Box
 				p={8}
-				rounded="2xl"
-				boxShadow="2xl"
+				bg={bg}
+				borderWidth={1}
+				borderColor={bg === "gray.100" ? "gray.200" : "gray.800"}
+				borderRadius="3xl"
+				boxShadow={bg === "gray.100" ? "lg" : "dark-lg"}
 				width={{ base: "95%", md: "50%" }}
 				border="2px solid rgb(0, 0, 0)"
-				maxWidth="400px"
-				bg={bg}>
+				maxWidth="400px">
 				<form onSubmit={handleSubmit(onSubmit)}>
 					<Stack spacing={3}>
 						<Heading
-							bgGradient="linear(to-r,rgb(202, 40, 40),rgb(202, 186, 40))"
-							bgClip="text"
-							fontSize="4xl"
-              textAlign="center"
+							color={bg === "gray.100" ? "gray.900" : "yellow.400"}
+							fontSize="3xl"
+							textAlign="center"
 							fontWeight="extrabold"
-              letterSpacing="tight"
+							letterSpacing="tight"
 							mb={4}>
 							Login
 						</Heading>

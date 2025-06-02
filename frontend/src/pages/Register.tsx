@@ -42,7 +42,7 @@ const Register = (): ReactElement => {
 
 	const toast = useToast();
 	const navigate = useNavigate();
-	const bg = useColorModeValue("gray.200", "gray.800");
+	const bg = useColorModeValue("gray.100", "gray.900");
 
 	const onSubmit = async (data: RegisterFormInputs) => {
 		try {
@@ -97,22 +97,21 @@ const Register = (): ReactElement => {
 			<Box
 				bg={bg}
 				p={8}
-				rounded="2xl"
-				boxShadow="2xl"
 				width={{ base: "95%", md: "50%" }}
+				rounded="2xl"
+				borderWidth={1}
+				borderRadius="3xl"
+				boxShadow={bg === "gray.100" ? "lg" : "dark-lg"}
 				border="2px solid rgb(0, 0, 0)"
-				maxWidth="400px"
-				>
+				maxWidth="400px">
 				<Heading
-					bgGradient="linear(to-r,rgb(202, 40, 40),rgb(202, 186, 40))"
-					bgClip="text"
+					color={bg === "gray.100" ? "gray.900" : "yellow.400"}
 					fontSize="3xl"
 					textAlign="center"
 					fontWeight="extrabold"
 					letterSpacing="tight"
-					style={{ WebkitTextStroke: "1px black" }}
 					mb={4}>
-					Criar conta
+					Criar Conta
 				</Heading>
 
 				<form onSubmit={handleSubmit(onSubmit)}>
