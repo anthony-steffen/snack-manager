@@ -225,7 +225,7 @@ const theme = extendTheme({
     global: {
       body: {
         _light: {
-          bgGradient: 'linear(115deg, gray.100 55%, gray.50 40%)',
+          bgGradient: 'linear(115deg, gray.50 55%, gray.100 40%)',
           color: 'text',
         },
         _dark: {
